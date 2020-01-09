@@ -30,6 +30,7 @@ We are interested in identifying patients who are likely doctor shopping. We ass
     df.rank <- br_cohits(data = df)
 
 Finally, we identify the IDs of 10 patients with the highest pageranks.
+    
     df.rank[order(rank, decreasing = T), ][1:10, ]
 
 ## Function overview

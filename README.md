@@ -50,4 +50,4 @@ Below is a brief outline of each function in this package:
 - **sparsematrix\_from\_matrix** 
     - Creates a sparsematrix from a matrix
 - **sparsematrix\_rm\_weights**
-    - Removes weights from a sparsematrix
+    - Removes edge weights from a sparsematrix

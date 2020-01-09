@@ -19,8 +19,7 @@ This package will be available on CRAN soon, and is currently available on githu
 ## Example
 Let's pretend we have a dataset (`df`) containing patient-provider ties (`patient_id` and `provider_id`) among providers that have ever proscribed an opioid.
 
-    library(data.table)
-    df <- data.table(
+    df <- data.frame(
       patient_id = sample(x = 1:10000, size = 10000, replace = T),
       provider_id = sample(x = 1:5000, size = 10000, replace = T)
     )
@@ -28,10 +27,6 @@ Let's pretend we have a dataset (`df`) containing patient-provider ties (`patien
 We are interested in identifying patients who are likely doctor shopping. We assume that a highly central patient in the patient-doctor network is likely to be a person who is deliberately identifying more "generous" opioid prescribers. We therefore estimate a patients' rank in this network with the CoHITS algorithm:
 
     df.rank <- br_cohits(data = df)
-
-Finally, we identify the IDs of 10 patients with the highest pageranks.
-    
-    df.rank[order(rank, decreasing = T), ][1:10, ]
 
 ## Function overview
 Below is a brief outline of each function in this package:

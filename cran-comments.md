@@ -1,5 +1,5 @@
 ## Test environments
-* local Windows 10 install, R 3.6.0
+* local Windows 10 install, R 3.4.1
 * x86_64-redhat-linux-gnu, R 3.5.2
 
 ## R CMD check results

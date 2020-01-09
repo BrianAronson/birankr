@@ -28,7 +28,7 @@ We are interested in identifying patients who are likely doctor shopping. We ass
 
     df.rank <- br_cohits(data = df)
    
-Note that rank estimates are scaled according to the size of the network, with more nodes tending to result in smaller ranks. Due to this, it is often advisable to rescale rank estimates more interpretable numbers. For example, we could rescale such that the mean rank = 1 with the following:
+Note that rank estimates are scaled according to the size of the network, with more nodes tending to result in smaller ranks. Due to this, it is often advisable to rescale rank estimates more interpretable numbers. For example, we could rescale such that the mean rank = 1 with the following data.table syntax:
 
     df.rank[, rank := rank/mean(rank)]
     

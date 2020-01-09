@@ -1,22 +1,22 @@
-﻿#birankr README.md
+# birankr
 
-##Overview
+## Overview
 Highly efficient functions for estimating various rank (centrality) measures of nodes in bipartite graphs (two-mode networks) including HITS, CoHITS, BGRM, and Birank. Also provides easy-to-use tools for incorporating or removing edge-weights during rank estimation, projecting two-mode graphs to one-mode, efficiently estimating PageRank in one-mode graphs, and for converting edgelists and matrices to sparseMatrix format. Best of all, the package's rank estimators can work directly with common formats of network data including edgelists (class data.frame, data.table, or tbl_df) and adjacency matrices (class matrix or dgCMatrix).
 
-##Background 
+## Background 
 When ranking nodes in bipartite networks, it is very common for individuals to estimate pagerank on a one-mode projection of the mode they are concerned with. However, a one-mode projection of a network often loses a great deal of relevant topological information about the network, and therefore tends to estimate less accurate node ranks. To estimate node ranks on bipartite networks more accurately, it is preferable to use a ranking algorithm that fully accounts for the topology of both modes of the network, such as HITS, CoHITS, BGRM, and Birank. 
 
 This package provides easy to use functions for implementing these bipartite ranking algorithms. Moreover, the package provides convenience options for incorporating node-level weights into rank estimations. To date, no other package provides easy to use functions for estimating node ranks with these algorithms, nor (in the case of HITS) as scalable as this package. We have tested rank estimations on laptops with 5m unique nodes for each mode within a minute.
 
 
-#Installation
+## Installation
 
 This package will be available on CRAN soon, and is currently available on github. Installing this package via github can be done with the following two lines:
 
     library(devtools)
     install_github("BrianAronson/birankr")
 
-#Example
+## Example
 Let's pretend we have a dataset (`df`) containing patient-provider ties (`patient_id` and `provider_id`) among providers that have ever proscribed an opioid.
 
     library(data.table)
@@ -32,7 +32,7 @@ We are interested in identifying patients who are likely doctor shopping. We ass
 Finally, we identify the IDs of 10 patients with the highest pageranks.
     df.rank[order(rank, decreasing = T), ][1:10, ]
 
-#Function overview
+## Function overview
 Below is a brief outline of each function in this package:
 
 **bipartite\_rank**

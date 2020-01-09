@@ -11,13 +11,10 @@ This package provides easy to use functions for implementing these bipartite ran
 
 ## Installation
 
-This package will be available on CRAN soon, and is currently available on github. Installing this package via github can be done with the following two lines:
-
-    library(devtools)
-    install_github("BrianAronson/birankr")
+This package can be directly installed via CRAN with `install.packages("birankr")`. Alternatively, newest versions of this package can be installed with `devtools::install_github("BrianAronson/birankr")`
 
 ## Example
-Let's pretend we have a dataset (`df`) containing patient-provider ties (`patient_id` and `provider_id`) among providers that have ever prescribed an opioid.
+Let's pretend we have a dataset (`df`) containing patient-provider ties (`patient_id` and `provider_id`) among providers that have ever prescribed an opioid:
 
     df <- data.frame(
       patient_id = sample(x = 1:10000, size = 10000, replace = T),
@@ -30,7 +27,13 @@ We are interested in identifying patients who are likely doctor shopping. We ass
    
 Note that rank estimates are scaled according to the size of the network, with more nodes tending to result in smaller ranks. Due to this, it is often advisable to rescale rank estimates more interpretable numbers. For example, we could rescale such that the mean rank = 1 with the following data.table syntax:
 
+    df.rank <- data.table(df.rank)
     df.rank[, rank := rank/mean(rank)]
+
+Finally, we decide to identify the IDs and ranks of the highest ranking patients in `df`:
+
+    head(df.rank[order(rank, decreasing = T), ], 10)
+
     
 ## Function overview
 Below is a brief outline of each function in this package:

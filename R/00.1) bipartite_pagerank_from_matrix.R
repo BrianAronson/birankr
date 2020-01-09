@@ -1,15 +1,4 @@
-# #' Estimate Bipartite Rank from Sparse Adjacency matrix
-# #' @description Internal use function for estimating bipartite ranks from a sparseMatrix. This is the workhorse underlying the bipartite_rank function
-# #' @param adj_mat Data to use for estimating pagerank. Must contain bipartite graph data, formatted as a a sparseMatrix (class dgCMatrix).
-# #' @param normalizer The normalizer (algorithm) used for estimating centrality scores (ranks) in the supplied data. Options include HITS, CoHITS, BGRM, and BiRank. Defaults to HITS.
-# #' @param return_mode The mode for which to return pagerank estimates. If option is set to "both", the function returns a list of pageranks for both modes of the input data. Defaults to rows if data is supplied as a matrix and the first column of an edgelist.
-# #' @param alpha Dampening factor for first mode of data. Defaults to 0.85.
-# #' @param beta Dampening factor for second mode of data. Defaults to 0.85.
-# #' @param max_iter Maximum number of iterations algorithm will run before model fails to converge. Defaults to 200.
-# #' @param tol Maximum tolerance of model convergence. Defaults to 1.0e-4.
-# #' @param verbose Show the progress of this function. Defaults to FALSE.
-# #' @import Matrix data.table
- 
+
 bipartite_pagerank_from_matrix <- function(
                      adj_mat,
                      normalizer = c('HITS','CoHITS','BGER','BGRM','BiRank'),

@@ -1,4 +1,4 @@
-# birankr
+﻿# birankr
 
 ## Overview
 Highly efficient functions for estimating various rank (centrality) measures of nodes in bipartite graphs (two-mode networks) including HITS, CoHITS, BGRM, and Birank. Also provides easy-to-use tools for incorporating or removing edge-weights during rank estimation, projecting two-mode graphs to one-mode, efficiently estimating PageRank in one-mode graphs, and for converting edgelists and matrices to sparseMatrix format. Best of all, the package's rank estimators can work directly with common formats of network data including edgelists (class `data.frame`, `data.table`, or `tbl_df`) and adjacency matrices (class `matrix` or `dgCMatrix`).

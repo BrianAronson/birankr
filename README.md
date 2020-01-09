@@ -31,23 +31,23 @@ We are interested in identifying patients who are likely doctor shopping. We ass
 ## Function overview
 Below is a brief outline of each function in this package:
 
-**bipartite\_rank**
+- **bipartite\_rank**
     - Estimates any type of bipartite rank.
-**br\_bgrm**
+- **br\_bgrm**
     - Estimates ranks with BGRM algorithm
-**br\_birank** 
+- **br\_birank** 
     - Estimates ranks with BiRank algorithm
-**br\_cohits**
+- **br\_cohits**
     - Estimates ranks with CoHITS algorithm
-**br\_hits** 
+- **br\_hits** 
     - Estimates ranks with HITS algorithm
-**pagerank**
+- **pagerank**
     - Estimates ranks with PageRank algorithm
-**project\_to\_one\_mode**
+- **project\_to\_one\_mode**
     - Creates a one mode projection of a sparse matrix
-**sparsematrix\_from\_edgelist**
+- **sparsematrix\_from\_edgelist**
     - Creates a sparsematrix from an edgelist
-**sparsematrix\_from\_matrix** 
+- **sparsematrix\_from\_matrix** 
     - Creates a sparsematrix from a matrix
-**sparsematrix\_rm\_weights**
+- **sparsematrix\_rm\_weights**
     - Removes weights from a sparsematrix

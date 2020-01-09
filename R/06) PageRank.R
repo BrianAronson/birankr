@@ -10,32 +10,35 @@
 #' @param weight_name Name of edge weights. Parameter ignored if data is an adjacency matrix. Defaults to edge weights = 1.
 #' @param rm_weights Removes edge weights from graph object before estimating PageRank. Parameter ignored if data is an edge list. Defaults to FALSE.
 #' @param duplicates How to treat duplicate edges if any in data. Parameter ignored if data is an adjacency matrix. If option "add" is selected, duplicated edges and corresponding edge weights are collapsed via addition. Otherwise, duplicated edges are removed and only the first instance of a duplicated edge is used. Defaults to "add".
+#' @param return_data_frame Return results as a data frame with node names in the first column and ranks in the second column. If set to FALSE, the function just returns a named vector of ranks. Defaults to TRUE.
 #' @param alpha Dampening factor. Defaults to 0.85.
 #' @param max_iter Maximum number of iterations to run before model fails to converge. Defaults to 200.
 #' @param tol Maximum tolerance of model convergence. Defaults to 1.0e-4.
 #' @param verbose Show the progress of this function. Defaults to FALSE.
-#' @keywords Bipartite PageRank rank centrality sparseMatrix 
+#' @keywords Bipartite PageRank rank centrality 
 #' @export
 #' @import Matrix data.table
 #' @examples
-#' #Estimate pagerank in one-mode data
+#' #Prepare one-mode data
 #'     df_one_mode <- data.frame(
 #'       sender = sample(x = 1:10000, size = 10000, replace = T), 
 #'       receiver = sample(x = 1:10000, size = 10000, replace = T)
 #'     )
+#'     
+#' #Add self-loops for all nodes
 #'     unique_ids <- unique(c(df_one_mode$sender, df_one_mode$receiver))
 #'     df_one_mode <- rbind(df_one_mode, data.frame(sender = unique_ids, 
 #'     receiver = unique_ids))
-#'     df_one_mode_node <- data.frame(id = unique_ids)
-#'     df_one_mode_node$pagerank <- pagerank(data = df_one_mode, is_bipartite = F) 
+#'     
+#' #Estimate page rank in one-mode data
+#'     pagerank <- pagerank(data = df_one_mode, is_bipartite = F) 
+#'     
 #' #Estimate pagerank in two-mode data
 #'     df_two_mode <- data.frame(
 #'       patient_id = sample(x = 1:10000, size = 10000, replace = T), 
-#'       provider_id = sample(x = 1:5000, size = 10000, replace = T),
-#'       mme = sample(x = 0:8 * 25, size = 10000, replace = T)
+#'       provider_id = sample(x = 1:5000, size = 10000, replace = T)
 #'     )
-#'     df_two_mode_node <- data.frame(id = unique(df_two_mode$patient_id))
-#'     df_two_mode_node$pagerank <- pagerank(data = df_two_mode) 
+#'     pagerank <- pagerank(data = df_two_mode) 
 
 pagerank <- function(
   data,
@@ -47,6 +50,7 @@ pagerank <- function(
   rm_weights = F,
   duplicates = c("add", "remove"),
   remove_weights = F,
+  return_data_frame = T,
   alpha = 0.85,
   max_iter = 200,
   tol = 1.0e-4,
@@ -103,15 +107,68 @@ pagerank <- function(
           adj_mat <- sparsematrix_rm_weights(adj_mat)
       }
   
-  #d) estimate pagerank
+  #e) estimate pagerank
       if(verbose) message("Estimating pagerank...")
-      pagerank_from_matrix(
+      rank <- pagerank_from_matrix(
         adj_mat = adj_mat,
         alpha = alpha,
         max_iter = max_iter,
         tol = tol,
         verbose = verbose
       )
+      
+  #f) find rank labels
+      #i) get labels if data is data frame
+          if(any(class(data) == "data.frame")){
+            #1) determine ID index
+                if(is.null(sender_name) | is.null(receiver_name)){
+                    id1 = 1
+                    id2 = 2
+                }else{
+                    id1 = match(sender_name, names(data))
+                    id2 = match(receiver_name, names(data))
+                }
+            #2) pull IDs for each mode in order of function
+                edges <- data[, c(id1, id2), with = F]
+                id_names1 <- as.character(unlist(unique(edges[, id1, with = F])))
+                id_names2 <- as.character(unlist(unique(edges[, id2, with = F])))
+          }
+      #ii) get labels if data is matrix
+          if(!any(class(data) == "data.frame")){
+            #1) sender names
+              if(!is.null(rownames(data))){
+                id_names1 <- rownames(data)
+              }else{
+                id_names1 <- 1:ncol(data)
+              }
+            #2) receiver names
+              if(!is.null(colnames(data))){
+                id_names2 <- colnames(data)
+              }else{
+                id_names2 <- 1:ncol(data)
+              }
+          }
+
+  #g) label ranks or make data.frame
+      if(return_data_frame){
+        if(project_mode[1] == "rows"){
+          rank <- data.frame(ID = id_names1, rank = rank)
+        }
+        if(project_mode[1] == "columns"){
+          rank <- data.frame(ID = id_names2, rank = rank)
+        }
+      }else{
+        if(project_mode[1] == "rows"){
+          names(rank) <- id_names1
+        }
+        if(project_mode[1] == "columns"){
+          names(rank) <- id_names2
+        }
+      }
+
+  #h) return data
+      return(rank)
+      
 }
 
 

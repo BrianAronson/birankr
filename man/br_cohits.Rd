@@ -12,6 +12,7 @@ br_cohits(
   rm_weights = FALSE,
   duplicates = c("add", "remove"),
   return_mode = c("rows", "columns", "both"),
+  return_data_frame = T,
   alpha = 0.85,
   beta = 0.85,
   max_iter = 200,
@@ -34,6 +35,8 @@ br_cohits(
 
 \item{return_mode}{Mode for which to return CoHITS ranks. Defaults to "rows" (the first column of an edge list).}
 
+\item{return_data_frame}{Return results as a data frame with node names in the first column and ranks in the second column. If set to FALSE, the function just returns a named vector of ranks. Defaults to TRUE.}
+
 \item{alpha}{Dampening factor for first mode of data. Defaults to 0.85.}
 
 \item{beta}{Dampening factor for second mode of data. Defaults to 0.85.}
@@ -50,24 +53,16 @@ Estimate CoHITS ranks of nodes from an edge list or adjacency matrix. Returns a 
 Created by Deng, Lyo, and Kind (2009), CoHITS was developed explicitly for use in bipartite graphs as a way to better-incorporate content information (the Co in COHITS) in HITS ranks. Like HITS, CoHITS is based on a markov process for simultaneously estimating ranks across each mode of the input data. CoHITS primarily differs from HITS in that it normalizes the transition matrix by the out-degree of the source nodes, leading to an interpretation more similar to that of a random walk.
 }
 \examples{
-#create data without association between mme and degree
+#create edge list between patients and providers
     df <- data.table(
       patient_id = sample(x = 1:10000, size = 10000, replace = T),
-      provider_id = sample(x = 1:5000, size = 10000, replace = T),
-      mme = sample(x = 0:8 * 25, size = 10000, replace = T)
+      provider_id = sample(x = 1:5000, size = 10000, replace = T)
     )
-    patient_df <- df[, .(degree = .N, sum.mme = sum(mme)), by = patient_id]
-    df <- merge(df, patient_df, by = "patient_id", sort = F)
-    df[, mme := round(abs(mme / (degree))/5)*5+1]
 
-#estimate CoHITS ranks with and without edge weights and assess correlation
-    unweighted_CoHITS <- CoHITS(data = df)
-    weighted_CoHITS <- CoHITS(data = df, sender_name = "patient_id", receiver_name = 
-    "provider_id", weight_name = "mme")
-    cor(unweighted_CoHITS, weighted_CoHITS)
+#estimate CoHITS ranks
+    CoHITS <- br_cohits(data = df)
 }
 \keyword{Bipartite}
 \keyword{CoHITS}
 \keyword{centrality}
 \keyword{rank}
-\keyword{sparseMatrix}

@@ -1,7 +1,7 @@
 #' Convert matrix to sparse matrix
 #' @description Converts adjacency matrices (class "matrix") to a sparse matrices (class "dgCMatrix").
 #' @param adj_mat Adjacency matrix.
-#' @keywords sparseMatrix dgCMatrix matrix
+#' @keywords dgCMatrix matrix
 #' @export
 #' @import Matrix data.table
 #' @examples

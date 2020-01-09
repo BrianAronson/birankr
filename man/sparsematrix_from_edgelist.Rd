@@ -40,5 +40,3 @@ Converts edge lists (class data.frame) to sparse matrices (class "dgCMatrix"). F
    sparsematrix_from_edgelist(data = df)
 }
 \keyword{dgCMatrix}
-\keyword{matrix}
-\keyword{sparseMatrix}

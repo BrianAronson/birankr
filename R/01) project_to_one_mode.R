@@ -2,7 +2,7 @@
 #' @description Create a one-mode projection of a two mode graph. Essentially, converts a rectangular matrix to a square one by taking the cross product of the input matrix. The edge weights in the resulting matrix are equal to the number of transitive ties of each node in the input matrix.
 #' @param mat Sparse matrix of class dgCMatrix
 #' @param mode Mode to return. Defaults to projecting by rows.
-#' @keywords sparseMatrix dgCMatrix matrix
+#' @keywords dgCMatrix matrix
 #' @export
 #' @importFrom Matrix tcrossprod
 #' @examples

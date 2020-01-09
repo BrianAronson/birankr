@@ -24,4 +24,3 @@ Create a one-mode projection of a two mode graph. Essentially, converts a rectan
 }
 \keyword{dgCMatrix}
 \keyword{matrix}
-\keyword{sparseMatrix}

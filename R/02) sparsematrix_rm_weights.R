@@ -1,7 +1,7 @@
 #' Remove sparse matrix edge weights
 #' @description Removes edge weights from sparse matrices.
 #' @param adj.mat Sparse matrix of class dgCMatrix
-#' @keywords sparseMatrix dgCMatrix matrix
+#' @keywords dgCMatrix matrix
 #' @export
 #' @import Matrix
 #' @examples

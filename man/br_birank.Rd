@@ -12,6 +12,7 @@ br_birank(
   rm_weights = FALSE,
   duplicates = c("add", "remove"),
   return_mode = c("rows", "columns", "both"),
+  return_data_frame = T,
   alpha = 0.85,
   beta = 0.85,
   max_iter = 200,
@@ -34,6 +35,8 @@ br_birank(
 
 \item{return_mode}{Mode for which to return BiRank ranks. Defaults to "rows" (the first column of an edge list).}
 
+\item{return_data_frame}{Return results as a data frame with node names in first column and ranks in the second column. If set to FALSE, the function just returns a named vector of ranks. Defaults to TRUE.}
+
 \item{alpha}{Dampening factor for first mode of data. Defaults to 0.85.}
 
 \item{beta}{Dampening factor for second mode of data. Defaults to 0.85.}
@@ -50,24 +53,16 @@ Estimate BiRanks of nodes from an edge list or adjacency matrix. Returns a vecto
 Created by He et al. (2017), BiRank is a highly generalizable algorithm that was developed explicitly for use in bipartite graphs. In fact, He et al.'s implementation of BiRank forms the basis of this package's implementation of all other bipartite ranking algorithms. Like every other bipartite ranking algorithm, BiRank simultaneously estimates ranks across each mode of the input data. BiRank's implementation is also highly similar to BGRM in that it symmetrically normalizes the transition matrix. BiRank differs from BGRM only in that it normalizes the transition matrix by the square-root outdegree of the source node and the square-root indegree of the target node.
 }
 \examples{
-#create data without association between mme and degree
+#create edge list between patients and providers
     df <- data.table(
-      patient_id = sample(x = 1:10000, size = 10000, replace = T), 
-      provider_id = sample(x = 1:5000, size = 10000, replace = T),
-      mme = sample(x = 0:8 * 25, size = 10000, replace = T)
+      patient_id = sample(x = 1:10000, size = 10000, replace = T),
+      provider_id = sample(x = 1:5000, size = 10000, replace = T)
     )
-    patient_df <- df[, .(degree = .N, sum.mme = sum(mme)), by = patient_id]
-    df <- merge(df, patient_df, by = "patient_id", sort = F)
-    df[, mme := round(abs(mme / (degree))/5)*5+1]
-     
-#estimate BiRank ranks with and without edge weights and assess correlation
-    unweighted_BiRank <- BiRank(data = df)
-    weighted_BiRank <- BiRank(data = df, sender_name = "patient_id", receiver_name = 
-    "provider_id", weight_name = "mme")
-    cor(unweighted_BiRank, weighted_BiRank)
+
+#estimate BiRank ranks
+    BiRank <- br_birank(data = df)
 }
 \keyword{BiRank}
 \keyword{Bipartite}
 \keyword{centrality}
 \keyword{rank}
-\keyword{sparseMatrix}

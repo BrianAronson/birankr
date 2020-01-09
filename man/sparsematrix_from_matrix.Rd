@@ -22,4 +22,3 @@ Converts adjacency matrices (class "matrix") to a sparse matrices (class "dgCMat
 }
 \keyword{dgCMatrix}
 \keyword{matrix}
-\keyword{sparseMatrix}

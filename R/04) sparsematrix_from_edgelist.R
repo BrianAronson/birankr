@@ -6,7 +6,7 @@
 #' @param weight_name Name of edge weights. Defaults to edge weight = 1.
 #' @param duplicates How to treat duplicate edges from edge list. If option "add" is selected, duplicated edges and corresponding edge weights are collapsed via addition. Otherwise, duplicated edges or removed and only the first instance of a duplicated edge is used. Defaults to "add".
 #' @param is_bipartite Indicate whether input data is bipartite (rather than unipartite/one-mode). Defaults to TRUE.
-#' @keywords sparseMatrix dgCMatrix matrix
+#' @keywords dgCMatrix
 #' @export
 #' @import Matrix data.table
 #' @examples
@@ -82,8 +82,8 @@ sparsematrix_from_edgelist <- function(
             )]
         }else{
             edges[, ':='(
-              id1 = as.numeric(factor(id1, levels = unique.ids)),
-              id2 = as.numeric(factor(id2, levels = unique.ids))
+              id1 = as.numeric(factor(id1, levels = unique_ids)),
+              id2 = as.numeric(factor(id2, levels = unique_ids))
             )]
         }
 

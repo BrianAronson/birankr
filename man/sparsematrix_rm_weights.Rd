@@ -24,4 +24,3 @@ Removes edge weights from sparse matrices.
 }
 \keyword{dgCMatrix}
 \keyword{matrix}
-\keyword{sparseMatrix}

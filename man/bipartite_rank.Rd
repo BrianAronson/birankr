@@ -46,6 +46,8 @@ bipartite_rank(
 \item{tol}{Maximum tolerance of model convergence. Defaults to 1.0e-4.}
 
 \item{verbose}{Show the progress of this function. Defaults to FALSE.}
+
+\item{return_data_frame}{Return results as a data frame with node names in the first column and ranks in the second column. If set to FALSE, the function just returns a named vector of ranks. Defaults to TRUE.}
 }
 \description{
 Estimate bipartite ranks (centrality scores) of nodes from an edge list or adjacency matrix. Functions as a wrapper for estimating rank based on a number of normalizers (algorithms) including HITS, CoHITS, BGRM, and BiRank. Returns a vector of ranks or (optionally) a list containing a vector for each mode. If the provided data is an edge list, this function returns ranks ordered by the unique values in the supplied edge list.
@@ -61,22 +63,14 @@ For information about the different normalizers available in this function, see 
 }
 }
 \examples{
-#create data without association between mme and degree
+#create edge list between patients and providers
     df <- data.table(
-      patient_id = sample(x = 1:10000, size = 10000, replace = T), 
-      provider_id = sample(x = 1:5000, size = 10000, replace = T),
-      mme = sample(x = 0:8 * 25, size = 10000, replace = T)
+      patient_id = sample(x = 1:10000, size = 10000, replace = T),
+      provider_id = sample(x = 1:5000, size = 10000, replace = T)
     )
-    patient_df <- df[, .(degree = .N, sum_mme = sum(mme)), by = patient_id]
-    df <- merge(df, patient_df, by = "patient_id", sort = F)
-    df[, mme := round(abs(mme / (degree))/5)*5+1]
-     
-#estimate two bipartite ranks with and without edge weights and assess correlation
-    unweighted_CoHITS <- bipartite_rank(data = df, normalizer = "CoHITS", sender_name = 
-                         "patient_id", receiver_name = "provider_id")
-    weighted_CoHITS <- bipartite_rank(data = df, normalizer = "CoHITS", sender_name =
-                       "patient_id", receiver_name = "provider_id", weight_name = "mme")
-    cor(unweighted_CoHITS, weighted_CoHITS)
+
+#estimate CoHITS ranks
+    CoHITS <- bipartite_rank(data = df, normalizer = "CoHITS")
 }
 \keyword{BGRM}
 \keyword{BiRank}
@@ -85,4 +79,3 @@ For information about the different normalizers available in this function, see 
 \keyword{HITS}
 \keyword{centrality}
 \keyword{rank}
-\keyword{sparseMatrix}

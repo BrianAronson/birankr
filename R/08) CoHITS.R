@@ -9,30 +9,24 @@
 #' @param rm_weights Removes edge weights from graph object before estimating CoHITS. Parameter ignored if data is an edge list. Defaults to FALSE.
 #' @param duplicates How to treat duplicate edges if any in data. Parameter ignored if data is an adjacency matrix. If option "add" is selected, duplicated edges and corresponding edge weights are collapsed via addition. Otherwise, duplicated edges are removed and only the first instance of a duplicated edge is used. Defaults to "add".
 #' @param return_mode Mode for which to return CoHITS ranks. Defaults to "rows" (the first column of an edge list).
+#' @param return_data_frame Return results as a data frame with node names in the first column and ranks in the second column. If set to FALSE, the function just returns a named vector of ranks. Defaults to TRUE.
 #' @param alpha Dampening factor for first mode of data. Defaults to 0.85.
 #' @param beta Dampening factor for second mode of data. Defaults to 0.85.
 #' @param max_iter Maximum number of iterations to run before model fails to converge. Defaults to 200.
 #' @param tol Maximum tolerance of model convergence. Defaults to 1.0e-4.
 #' @param verbose Show the progress of this function. Defaults to FALSE.
-#' @keywords Bipartite rank centrality CoHITS sparseMatrix
+#' @keywords Bipartite rank centrality CoHITS
 #' @export
 #' @import Matrix data.table
 #' @examples
-#' #create data without association between mme and degree
+#' #create edge list between patients and providers
 #'     df <- data.table(
 #'       patient_id = sample(x = 1:10000, size = 10000, replace = T),
-#'       provider_id = sample(x = 1:5000, size = 10000, replace = T),
-#'       mme = sample(x = 0:8 * 25, size = 10000, replace = T)
+#'       provider_id = sample(x = 1:5000, size = 10000, replace = T)
 #'     )
-#'     patient_df <- df[, .(degree = .N, sum.mme = sum(mme)), by = patient_id]
-#'     df <- merge(df, patient_df, by = "patient_id", sort = F)
-#'     df[, mme := round(abs(mme / (degree))/5)*5+1]
 #'
-#' #estimate CoHITS ranks with and without edge weights and assess correlation
-#'     unweighted_CoHITS <- CoHITS(data = df)
-#'     weighted_CoHITS <- CoHITS(data = df, sender_name = "patient_id", receiver_name = 
-#'     "provider_id", weight_name = "mme")
-#'     cor(unweighted_CoHITS, weighted_CoHITS)
+#' #estimate CoHITS ranks
+#'     CoHITS <- br_cohits(data = df)
 
 br_cohits <- function(
   data,
@@ -42,6 +36,7 @@ br_cohits <- function(
   rm_weights= FALSE,
   duplicates = c("add", "remove"),
   return_mode = c("rows", "columns", "both"),
+  return_data_frame = T,
   alpha = 0.85,
   beta = 0.85,
   max_iter = 200,
@@ -80,7 +75,7 @@ br_cohits <- function(
 
   #e) estimate bipartite rank
       if(verbose) message("Estimating bipartite rank...")
-      bipartite_pagerank_from_matrix(
+      rank <- bipartite_pagerank_from_matrix(
         adj_mat = adj_mat,
         normalizer = "CoHITS",
         alpha = alpha,
@@ -91,9 +86,66 @@ br_cohits <- function(
         return_mode = return_mode[1]
       )
 
+  #f) find rank labels
+      #i) get labels if data is data frame
+          if(any(class(data) == "data.frame")){
+            #1) determine ID index
+                if(is.null(sender_name) | is.null(receiver_name)){
+                    id1 = 1
+                    id2 = 2
+                }else{
+                    id1 = match(sender_name, names(data))
+                    id2 = match(receiver_name, names(data))
+                }
+            #2) pull IDs for each mode in order of function
+                edges <- data[, c(id1, id2), with = F]
+                id_names1 <- as.character(unlist(unique(edges[, id1, with = F])))
+                id_names2 <- as.character(unlist(unique(edges[, id2, with = F])))
+          }
+      #ii) get labels if data is matrix
+          if(!any(class(data) == "data.frame")){
+            #1) sender names
+              if(!is.null(rownames(data))){
+                id_names1 <- rownames(data)
+              }else{
+                id_names1 <- 1:ncol(data)
+              }
+            #2) receiver names
+              if(!is.null(colnames(data))){
+                id_names2 <- colnames(data)
+              }else{
+                id_names2 <- 1:ncol(data)
+              }
+          }
+
+  #g) label ranks or make data.frame
+      if(return_data_frame){
+        if(return_mode[1] == "rows"){
+          rank <- data.frame(ID = id_names1, rank = rank)
+        }
+        if(return_mode[1] == "columns"){
+          rank <- data.frame(ID = id_names2, rank = rank)
+        }
+        if(return_mode[1] == "both"){
+          rank <- list(
+            rows = data.frame(ID = id_names1, rank = rank[[1]]),
+            columns = data.frame(ID = id_names2, rank = rank[[2]])
+          )
+        }
+      }else{
+        if(return_mode[1] == "rows"){
+          names(rank) <- id_names1
+        }
+        if(return_mode[1] == "columns"){
+          names(rank) <- id_names2
+        }
+        if(return_mode[1] == "both"){
+          names(rank[[1]]) <- id_names1
+          names(rank[[2]]) <- id_names2
+        }
+      }
+
+  #h) return data
+      return(rank)
+
 }
-
-
-
-
-

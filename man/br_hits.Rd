@@ -12,6 +12,7 @@ br_hits(
   rm_weights = FALSE,
   duplicates = c("add", "remove"),
   return_mode = c("rows", "columns", "both"),
+  return_data_frame = T,
   alpha = 0.85,
   beta = 0.85,
   max_iter = 200,
@@ -34,6 +35,8 @@ br_hits(
 
 \item{return_mode}{Mode for which to return HITS ranks. Defaults to "rows" (the first column of an edge list).}
 
+\item{return_data_frame}{Return results as a data frame with node names in the first column and ranks in the second column. If set to FALSE, the function just returns a named vector of ranks. Defaults to TRUE.}
+
 \item{alpha}{Dampening factor for first mode of data. Defaults to 0.85.}
 
 \item{beta}{Dampening factor for second mode of data. Defaults to 0.85.}
@@ -50,24 +53,16 @@ Estimate HITS ranks of nodes from an edge list or adjacency matrix. Returns a ve
 Although orginally designed for estimating ranks in unipartite graphs, HITS (Hyperlink-Induced Topic Search) is also one of the earliest bipartite ranking algorithms. Created by Jon Kleinberg as an alternative to PageRank, HITS takes better account of the topology of bipartite networks by iteratively ranking nodes according to their role as an "Authority" and as a "Hub". Nodes with authority have high indegree from high ranking hubs; high ranking hubs have high outdegree to nodes with high authority. This function provides a slightly expanded version of HITS that only interfaces with bipartite networks and that allows for weighted edges. In general, HITS ranks tend to be more sensitive to user query than PageRanks, but HITS is substantially less efficient in ranking large graphs. HITS is likely less preferable than the other bipartite ranking algorithms in most applications. There are a number of contexts where HITS performs poorly, such as in graphs with extreme outliers.
 }
 \examples{
-#create data without association between mme and degree
+#create edge list between patients and providers
     df <- data.table(
       patient_id = sample(x = 1:10000, size = 10000, replace = T),
-      provider_id = sample(x = 1:5000, size = 10000, replace = T),
-      mme = sample(x = 0:8 * 25, size = 10000, replace = T)
+      provider_id = sample(x = 1:5000, size = 10000, replace = T)
     )
-    patient_df <- df[, .(degree = .N, sum.mme = sum(mme)), by = patient_id]
-    df <- merge(df, patient_df, by = "patient_id", sort = F)
-    df[, mme := round(abs(mme / (degree))/5)*5+1]
 
-#estimate HITS ranks with and without edge weights and assess correlation
-    unweighted_HITS <- HITS(data = df)
-    weighted_HITS <- HITS(data = df, sender_name = "patient_id", receiver_name = 
-    "provider_id", weight_name = "mme")
-    cor(unweighted_HITS, weighted_HITS)
+#estimate HITS ranks
+    HITS <- br_hits(data = df)
 }
 \keyword{Bipartite}
 \keyword{HITS}
 \keyword{centrality}
 \keyword{rank}
-\keyword{sparseMatrix}

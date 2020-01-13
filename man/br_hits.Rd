@@ -4,21 +4,11 @@
 \alias{br_hits}
 \title{HITS Ranks}
 \usage{
-br_hits(
-  data,
-  sender_name = NULL,
-  receiver_name = NULL,
-  weight_name = NULL,
-  rm_weights = FALSE,
-  duplicates = c("add", "remove"),
-  return_mode = c("rows", "columns", "both"),
-  return_data_frame = TRUE,
-  alpha = 0.85,
-  beta = 0.85,
-  max_iter = 200,
-  tol = 1e-04,
-  verbose = FALSE
-)
+br_hits(data, sender_name = NULL, receiver_name = NULL,
+  weight_name = NULL, rm_weights = FALSE, duplicates = c("add",
+  "remove"), return_mode = c("rows", "columns", "both"),
+  return_data_frame = TRUE, alpha = 0.85, beta = 0.85,
+  max_iter = 200, tol = 1e-04, verbose = FALSE)
 }
 \arguments{
 \item{data}{Data to use for estimating HITS. Must contain bipartite graph data, either formatted as an edge list (class data.frame, data.table, or tibble (tbl_df)) or as an adjacency matrix (class matrix or dgCMatrix).}
@@ -49,8 +39,9 @@ br_hits(
 }
 \description{
 Estimate HITS ranks of nodes from an edge list or adjacency matrix. Returns a vector of ranks or (optionally) a list containing a vector for each mode. If the provided data is an edge list, this function returns ranks ordered by the unique values in the selected mode.
-
-Although originally designed for estimating ranks in unipartite graphs, HITS (Hyperlink-Induced Topic Search) is also one of the earliest bipartite ranking algorithms. Created by Jon Kleinberg as an alternative to PageRank, HITS takes better account of the topology of bipartite networks by iteratively ranking nodes according to their role as an "Authority" and as a "Hub". Nodes with authority have high indegree from high ranking hubs; high ranking hubs have high outdegree to nodes with high authority. This function provides a slightly expanded version of HITS that only interfaces with bipartite networks and that allows for weighted edges. In general, HITS ranks tend to be more sensitive to user query than PageRanks, but HITS is substantially less efficient in ranking large graphs. HITS is likely less preferable than the other bipartite ranking algorithms in most applications. There are a number of contexts where HITS performs poorly, such as in graphs with extreme outliers.
+}
+\details{
+Although originally designed for estimating ranks in unipartite graphs, HITS (Hyperlink-Induced Topic Search) is also one of the earliest bipartite ranking algorithms. Created by Jon Kleinberg (2009) as an alternative to PageRank, HITS takes better account of the topology of bipartite networks by iteratively ranking nodes according to their role as an "Authority" and as a "Hub". Nodes with authority have high indegree from high ranking hubs; high ranking hubs have high outdegree to nodes with high authority. This function provides a slightly expanded version of HITS that only interfaces with bipartite networks and that allows for weighted edges. In general, HITS ranks tend to be more sensitive to user query than PageRanks, but HITS is substantially less efficient in ranking large graphs. HITS is likely less preferable than the other bipartite ranking algorithms in most applications. There are a number of contexts where HITS performs poorly, such as in graphs with extreme outliers.
 }
 \examples{
 #create edge list between patients and providers
@@ -61,6 +52,9 @@ Although originally designed for estimating ranks in unipartite graphs, HITS (Hy
 
 #estimate HITS ranks
     HITS <- br_hits(data = df)
+}
+\references{
+Jon M. Kleinberg. "Authoritative sources in a hyperlinked environment". \emph{J. ACM}, 46(5):604-632, September 1999.
 }
 \keyword{Bipartite}
 \keyword{HITS}

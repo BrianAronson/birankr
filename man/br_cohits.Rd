@@ -4,21 +4,11 @@
 \alias{br_cohits}
 \title{CoHITS Ranks}
 \usage{
-br_cohits(
-  data,
-  sender_name = NULL,
-  receiver_name = NULL,
-  weight_name = NULL,
-  rm_weights = FALSE,
-  duplicates = c("add", "remove"),
-  return_mode = c("rows", "columns", "both"),
-  return_data_frame = TRUE,
-  alpha = 0.85,
-  beta = 0.85,
-  max_iter = 200,
-  tol = 1e-04,
-  verbose = FALSE
-)
+br_cohits(data, sender_name = NULL, receiver_name = NULL,
+  weight_name = NULL, rm_weights = FALSE, duplicates = c("add",
+  "remove"), return_mode = c("rows", "columns", "both"),
+  return_data_frame = TRUE, alpha = 0.85, beta = 0.85,
+  max_iter = 200, tol = 1e-04, verbose = FALSE)
 }
 \arguments{
 \item{data}{Data to use for estimating CoHITS. Must contain bipartite graph data, either formatted as an edge list (class data.frame, data.table, or tibble (tbl_df)) or as an adjacency matrix (class matrix or dgCMatrix).}
@@ -49,8 +39,9 @@ br_cohits(
 }
 \description{
 Estimate CoHITS ranks of nodes from an edge list or adjacency matrix. Returns a vector of ranks or (optionally) a list containing a vector for each mode. If the provided data is an edge list, this function returns ranks ordered by the unique values in the selected mode.
-
-Created by Deng, Lyo, and Kind (2009), CoHITS was developed explicitly for use in bipartite graphs as a way to better-incorporate content information (the Co in COHITS) in HITS ranks. Like HITS, CoHITS is based on a markov process for simultaneously estimating ranks across each mode of the input data. CoHITS primarily differs from HITS in that it normalizes the transition matrix by the out-degree of the source nodes, leading to an interpretation more similar to that of a random walk.
+}
+\details{
+Created by Deng, Lyo, and Kind (2009), CoHITS was developed explicitly for use in bipartite graphs as a way to better-incorporate content information (the "Co" in CoHITS) in HITS ranks. Like HITS, CoHITS is based on a markov process for simultaneously estimating ranks across each mode of the input data. CoHITS primarily differs from HITS in that it normalizes the transition matrix by the out-degree of the source nodes, leading to an interpretation more similar to that of a random walk.
 }
 \examples{
 #create edge list between patients and providers
@@ -61,6 +52,9 @@ Created by Deng, Lyo, and Kind (2009), CoHITS was developed explicitly for use i
 
 #estimate CoHITS ranks
     CoHITS <- br_cohits(data = df)
+}
+\references{
+Hongbo Deng, Michael R. Lyu, and Irwin King. "A generalized co-hits algorithm and its appli-cation to bipartite graphs". In \emph{Proceedings of the 15th ACM SIGKDD International Conferenceon Knowledge Discovery and Data Mining},  KDD '09,  pages 239-248,  New York,  NY, USA, 2009. ACM.
 }
 \keyword{Bipartite}
 \keyword{CoHITS}

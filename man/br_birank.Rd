@@ -4,21 +4,11 @@
 \alias{br_birank}
 \title{BiRanks}
 \usage{
-br_birank(
-  data,
-  sender_name = NULL,
-  receiver_name = NULL,
-  weight_name = NULL,
-  rm_weights = FALSE,
-  duplicates = c("add", "remove"),
-  return_mode = c("rows", "columns", "both"),
-  return_data_frame = TRUE,
-  alpha = 0.85,
-  beta = 0.85,
-  max_iter = 200,
-  tol = 1e-04,
-  verbose = FALSE
-)
+br_birank(data, sender_name = NULL, receiver_name = NULL,
+  weight_name = NULL, rm_weights = FALSE, duplicates = c("add",
+  "remove"), return_mode = c("rows", "columns", "both"),
+  return_data_frame = TRUE, alpha = 0.85, beta = 0.85,
+  max_iter = 200, tol = 1e-04, verbose = FALSE)
 }
 \arguments{
 \item{data}{Data to use for estimating BiRank. Must contain bipartite graph data, either formatted as an edge list (class data.frame, data.table, or tibble (tbl_df)) or as an adjacency matrix (class matrix or dgCMatrix).}
@@ -49,7 +39,8 @@ br_birank(
 }
 \description{
 Estimate BiRanks of nodes from an edge list or adjacency matrix. Returns a vector of ranks or (optionally) a list containing a vector for each mode. If the provided data is an edge list, this function returns ranks ordered by the unique values in the selected mode.
-
+}
+\details{
 Created by He et al. (2017), BiRank is a highly generalizable algorithm that was developed explicitly for use in bipartite graphs. In fact, He et al.'s implementation of BiRank forms the basis of this package's implementation of all other bipartite ranking algorithms. Like every other bipartite ranking algorithm, BiRank simultaneously estimates ranks across each mode of the input data. BiRank's implementation is also highly similar to BGRM in that it symmetrically normalizes the transition matrix. BiRank differs from BGRM only in that it normalizes the transition matrix by the square-root outdegree of the source node and the square-root indegree of the target node.
 }
 \examples{
@@ -61,6 +52,9 @@ Created by He et al. (2017), BiRank is a highly generalizable algorithm that was
 
 #estimate BiRank ranks
     BiRank <- br_birank(data = df)
+}
+\references{
+Xiangnan He, Ming Gao, Min-Yen Kan, and Dingxian Wang. "Birank: Towards ranking on bipartite graphs". \emph{IEEE Transactions on Knowledge and Data Engineering}, 29(1):57-71, 2016
 }
 \keyword{BiRank}
 \keyword{Bipartite}

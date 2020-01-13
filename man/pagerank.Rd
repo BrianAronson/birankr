@@ -4,21 +4,11 @@
 \alias{pagerank}
 \title{Estimate PageRank}
 \usage{
-pagerank(
-  data,
-  is_bipartite = TRUE,
-  project_mode = c("rows", "columns"),
-  sender_name = NULL,
-  receiver_name = NULL,
-  weight_name = NULL,
-  rm_weights = FALSE,
-  duplicates = c("add", "remove"),
-  return_data_frame = TRUE,
-  alpha = 0.85,
-  max_iter = 200,
-  tol = 1e-04,
-  verbose = FALSE
-)
+pagerank(data, is_bipartite = TRUE, project_mode = c("rows",
+  "columns"), sender_name = NULL, receiver_name = NULL,
+  weight_name = NULL, rm_weights = FALSE, duplicates = c("add",
+  "remove"), return_data_frame = TRUE, alpha = 0.85, max_iter = 200,
+  tol = 1e-04, verbose = FALSE)
 }
 \arguments{
 \item{data}{Data to use for estimating PageRank. Can contain unipartite or bipartite graph data, either formatted as an edge list (class data.frame, data.table, or tibble (tbl_df)) or as an adjacency matrix (class matrix or dgCMatrix).}
@@ -49,7 +39,8 @@ pagerank(
 }
 \description{
 Estimate PageRank (centrality scores) of nodes from an edge list or adjacency matrix. If data is a bipartite graph, estimates PageRank based on a one-mode projection of the input. If the data is an edge list, returns ranks ordered by the unique values in the supplied edge list (first by unique senders, then by unique receivers).
-
+}
+\details{
 The default optional arguments are likely well-suited for most users. However, it is critical to change the is.bipartite function to FALSE when working with one mode data. In addition, when estimating PageRank in unipartite edge lists that contain nodes with outdegrees or indegrees equal to 0, it is recommended that users append self-ties to the edge list to ensure that the returned PageRank estimates are ordered intuitively.
 }
 \examples{
@@ -65,7 +56,7 @@ The default optional arguments are likely well-suited for most users. However, i
     receiver = unique_ids))
     
 #Estimate PageRank in one-mode data
-    pagerank <- pagerank(data = df_one_mode, is_bipartite = FALSE) 
+    PageRank <- pagerank(data = df_one_mode, is_bipartite = FALSE) 
     
 #Estimate PageRank in two-mode data
     df_two_mode <- data.frame(
@@ -73,6 +64,9 @@ The default optional arguments are likely well-suited for most users. However, i
       provider_id = sample(x = 1:5000, size = 10000, replace = TRUE)
     )
     PageRank <- pagerank(data = df_two_mode) 
+}
+\references{
+Lawrence Page, Sergey Brin, Rajeev Motwani, and Terry Winograd. "The pagerank citation ranking: Bringing order to the web". Technical report, Stanford InfoLab, 1999
 }
 \keyword{Bipartite}
 \keyword{PageRank}

@@ -1,7 +1,7 @@
 #' Bipartite Ranks
 #' @description Estimate bipartite ranks (centrality scores) of nodes from an edge list or adjacency matrix. Functions as a wrapper for estimating rank based on a number of normalizers (algorithms) including HITS, CoHITS, BGRM, and BiRank. Returns a vector of ranks or (optionally) a list containing a vector for each mode. If the provided data is an edge list, this function returns ranks ordered by the unique values in the supplied edge list.
 #' 
-#' For information about the different normalizers available in this function, see the descriptions for the HITS, CoHITS, BGRM, and BiRank functions. However, below outlines the key differences between the normalizers, with \eqn{K_d} and \eqn{K_p} representing diagonal matrices with generalized degrees (sum of the edge weights) on the diagonal (e.g. \eqn{(K_d)_{ii} = \sum_j w_{ij}} and \eqn{(K_p)_{jj} = \sum_i w_{ij}}).
+#' @details For information about the different normalizers available in this function, see the descriptions for the HITS, CoHITS, BGRM, and BiRank functions. However, below outlines the key differences between the normalizers, with \eqn{K_d} and \eqn{K_p} representing diagonal matrices with generalized degrees (sum of the edge weights) on the diagonal (e.g. \eqn{(K_d)_{ii} = \sum_j w_{ij}} and \eqn{(K_p)_{jj} = \sum_i w_{ij}}).
 #'\tabular{lll}{ 
 #'   \strong{Transition matrix} \tab \strong{\eqn{S_p}} \tab \strong{\eqn{S_d}} \cr
 #'           --------------------- \tab --------------------- \tab --------------------- \cr
@@ -11,7 +11,7 @@
 #'   BiRank \tab \eqn{K_p^{-1/2} W^T K_d^{-1/2}} \tab \eqn{K_d^{-1/2} W K_p^{-1/2}} 
 #'}
 #'  
-#'  
+#' @md  
 #' @param data Data to use for estimating rank. Must contain bipartite graph data, either formatted as an edge list (class data.frame, data.table, or tibble (tbl_df)) or as an adjacency matrix (class matrix or dgCMatrix).
 #' @param sender_name Name of sender column. Parameter ignored if data is an adjacency matrix. Defaults to first column of edge list.
 #' @param receiver_name Name of sender column. Parameter ignored if data is an adjacency matrix. Defaults to the second column of edge list.
@@ -130,32 +130,48 @@ bipartite_rank <- function(
               }
           }
 
-  #g) label ranks or make data.frame
-      if(return_data_frame){
-        if(return_mode[1] == "rows"){
-          rank <- data.frame(ID = id_names1, rank = rank)
-        }
-        if(return_mode[1] == "columns"){
-          rank <- data.frame(ID = id_names2, rank = rank)
-        }
-        if(return_mode[1] == "both"){
-          rank <- list(
-            rows = data.frame(ID = id_names1, rank = rank[[1]]),
-            columns = data.frame(ID = id_names2, rank = rank[[2]])
-          )
-        }
-      }else{
-        if(return_mode[1] == "rows"){
-          names(rank) <- id_names1
-        }
-        if(return_mode[1] == "columns"){
-          names(rank) <- id_names2
-        }
-        if(return_mode[1] == "both"){
-          names(rank[[1]]) <- id_names1
-          names(rank[[2]]) <- id_names2
-        }
-      }
+  #g) format results
+      #i) get variable name id of a data.frame
+          if(any(class(data) == "data.frame")){
+            sender_name <- names(edges)[1]
+            receiver_name <- names(edges)[2]
+          } else{
+            sender_name <- "ID"  
+            receiver_name <- "ID"
+          }
+
+      #ii) if return a data frame, format results as a dataframe 
+          if(return_data_frame){
+            if(return_mode[1] == "rows"){
+              rank <- data.frame(ID = id_names1, rank = rank)
+              names(rank)[1] <- sender_name
+            }
+            if(return_mode[1] == "columns"){
+              rank <- data.frame(ID = id_names2, rank = rank)
+              names(rank)[1] <- receiver_name
+            }
+            if(return_mode[1] == "both"){
+              rank <- list(
+                rows = data.frame(ID = id_names1, rank = rank[[1]]),
+                columns = data.frame(ID = id_names2, rank = rank[[2]])
+              )
+              names(rank$rows)[1] <- sender_name
+              names(rank$columns)[1] <- receiver_name
+            }
+          }
+      #iii) if not return data frame, format results as vector
+          if(!return_data_frame){
+            if(return_mode[1] == "rows"){
+              names(rank) <- id_names1
+            }
+            if(return_mode[1] == "columns"){
+              names(rank) <- id_names2
+            }
+            if(return_mode[1] == "both"){
+              names(rank[[1]]) <- id_names1
+              names(rank[[2]]) <- id_names2
+            }
+          }
 
   #h) return data
       return(rank)

@@ -1,7 +1,7 @@
 #' CoHITS Ranks
 #' @description Estimate CoHITS ranks of nodes from an edge list or adjacency matrix. Returns a vector of ranks or (optionally) a list containing a vector for each mode. If the provided data is an edge list, this function returns ranks ordered by the unique values in the selected mode.
 #' 
-#' Created by Deng, Lyo, and Kind (2009), CoHITS was developed explicitly for use in bipartite graphs as a way to better-incorporate content information (the Co in COHITS) in HITS ranks. Like HITS, CoHITS is based on a markov process for simultaneously estimating ranks across each mode of the input data. CoHITS primarily differs from HITS in that it normalizes the transition matrix by the out-degree of the source nodes, leading to an interpretation more similar to that of a random walk.
+#' @details Created by Deng, Lyo, and Kind (2009), CoHITS was developed explicitly for use in bipartite graphs as a way to better-incorporate content information (the "Co" in CoHITS) in HITS ranks. Like HITS, CoHITS is based on a markov process for simultaneously estimating ranks across each mode of the input data. CoHITS primarily differs from HITS in that it normalizes the transition matrix by the out-degree of the source nodes, leading to an interpretation more similar to that of a random walk.
 #' @param data Data to use for estimating CoHITS. Must contain bipartite graph data, either formatted as an edge list (class data.frame, data.table, or tibble (tbl_df)) or as an adjacency matrix (class matrix or dgCMatrix).
 #' @param sender_name Name of sender column. Parameter ignored if data is an adjacency matrix. Defaults to first column of edge list.
 #' @param receiver_name Name of sender column. Parameter ignored if data is an adjacency matrix. Defaults to the second column of edge list.
@@ -18,6 +18,9 @@
 #' @keywords Bipartite rank centrality CoHITS
 #' @export
 #' @import Matrix data.table
+#' @md
+#' @references 
+#' Hongbo Deng, Michael R. Lyu, and Irwin King. "A generalized co-hits algorithm and its appli-cation to bipartite graphs". In *Proceedings of the 15th ACM SIGKDD International Conferenceon Knowledge Discovery and Data Mining*,  KDD '09,  pages 239-248,  New York,  NY, USA, 2009. ACM.
 #' @examples
 #' #create edge list between patients and providers
 #'     df <- data.table(
@@ -118,34 +121,51 @@ br_cohits <- function(
               }
           }
 
-  #g) label ranks or make data.frame
-      if(return_data_frame){
-        if(return_mode[1] == "rows"){
-          rank <- data.frame(ID = id_names1, rank = rank)
-        }
-        if(return_mode[1] == "columns"){
-          rank <- data.frame(ID = id_names2, rank = rank)
-        }
-        if(return_mode[1] == "both"){
-          rank <- list(
-            rows = data.frame(ID = id_names1, rank = rank[[1]]),
-            columns = data.frame(ID = id_names2, rank = rank[[2]])
-          )
-        }
-      }else{
-        if(return_mode[1] == "rows"){
-          names(rank) <- id_names1
-        }
-        if(return_mode[1] == "columns"){
-          names(rank) <- id_names2
-        }
-        if(return_mode[1] == "both"){
-          names(rank[[1]]) <- id_names1
-          names(rank[[2]]) <- id_names2
-        }
-      }
+  #g) format results
+      #i) get variable name id of a data.frame
+          if(any(class(data) == "data.frame")){
+            sender_name <- names(edges)[1]
+            receiver_name <- names(edges)[2]
+          } else{
+            sender_name <- "ID"
+            receiver_name <- "ID"
+          }
+
+      #ii) if return a data frame, format results as a dataframe
+          if(return_data_frame){
+            if(return_mode[1] == "rows"){
+              rank <- data.frame(ID = id_names1, rank = rank)
+              names(rank)[1] <- sender_name
+            }
+            if(return_mode[1] == "columns"){
+              rank <- data.frame(ID = id_names2, rank = rank)
+              names(rank)[1] <- receiver_name
+            }
+            if(return_mode[1] == "both"){
+              rank <- list(
+                rows = data.frame(ID = id_names1, rank = rank[[1]]),
+                columns = data.frame(ID = id_names2, rank = rank[[2]])
+              )
+              names(rank$rows)[1] <- sender_name
+              names(rank$columns)[1] <- receiver_name
+            }
+          }
+      #iii) if not return data frame, format results as vector
+          if(!return_data_frame){
+            if(return_mode[1] == "rows"){
+              names(rank) <- id_names1
+            }
+            if(return_mode[1] == "columns"){
+              names(rank) <- id_names2
+            }
+            if(return_mode[1] == "both"){
+              names(rank[[1]]) <- id_names1
+              names(rank[[2]]) <- id_names2
+            }
+          }
 
   #h) return data
       return(rank)
 
 }
+      

@@ -4,21 +4,11 @@
 \alias{br_bgrm}
 \title{BGRM Ranks}
 \usage{
-br_bgrm(
-  data,
-  sender_name = NULL,
-  receiver_name = NULL,
-  weight_name = NULL,
-  rm_weights = FALSE,
-  duplicates = c("add", "remove"),
-  return_mode = c("rows", "columns", "both"),
-  return_data_frame = TRUE,
-  alpha = 0.85,
-  beta = 0.85,
-  max_iter = 200,
-  tol = 1e-04,
-  verbose = FALSE
-)
+br_bgrm(data, sender_name = NULL, receiver_name = NULL,
+  weight_name = NULL, rm_weights = FALSE, duplicates = c("add",
+  "remove"), return_mode = c("rows", "columns", "both"),
+  return_data_frame = TRUE, alpha = 0.85, beta = 0.85,
+  max_iter = 200, tol = 1e-04, verbose = FALSE)
 }
 \arguments{
 \item{data}{Data to use for estimating BGRM. Must contain bipartite graph data, either formatted as an edge list (class data.frame, data.table, or tibble (tbl_df)) or as an adjacency matrix (class matrix or dgCMatrix).}
@@ -49,7 +39,8 @@ br_bgrm(
 }
 \description{
 Estimate BGRM ranks of nodes from an edge list or adjacency matrix. Returns a vector of ranks or (optionally) a list containing a vector for each mode. If the provided data is an edge list, this function returns ranks ordered by the unique values in the selected mode.
-
+}
+\details{
 Created by Rui, et. al (2007), BGRM (Bipartite Graph Reinforcement Model) was developed explicitly for use in bipartite graphs. Like every bipartite ranking algorithm in this package, BGRM simultaneously estimates ranks across each mode of the input data. BGRM primarily differs from CoHITS and HITS by symmetrically normalizing the transition matrix, both by the out-degree of the source node and the indegree of the target node.
 }
 \examples{
@@ -61,6 +52,9 @@ Created by Rui, et. al (2007), BGRM (Bipartite Graph Reinforcement Model) was de
 
 #estimate BGRM ranks
     BGRM <- br_bgrm(data = df)
+}
+\references{
+Xiaoguang Rui, Mingjing Li, Zhiwei Li, Wei-Ying Ma, and Nenghai Yu. "Bipartite graph reinforcement model for web image annotation". In \emph{Proceedings of the 15th ACM International Conference on Multimedia}, MM '07, pages 585-594, New York, NY, USA, 2007. ACM.
 }
 \keyword{BGRM}
 \keyword{Bipartite}

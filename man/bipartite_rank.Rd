@@ -4,22 +4,12 @@
 \alias{bipartite_rank}
 \title{Bipartite Ranks}
 \usage{
-bipartite_rank(
-  data,
-  sender_name = NULL,
-  receiver_name = NULL,
-  weight_name = NULL,
-  rm_weights = FALSE,
-  duplicates = c("add", "remove"),
-  normalizer = c("HITS", "CoHITS", "BGRM", "BiRank"),
-  return_mode = c("rows", "columns", "both"),
-  return_data_frame = TRUE,
-  alpha = 0.85,
-  beta = 0.85,
-  max_iter = 200,
-  tol = 1e-04,
-  verbose = FALSE
-)
+bipartite_rank(data, sender_name = NULL, receiver_name = NULL,
+  weight_name = NULL, rm_weights = FALSE, duplicates = c("add",
+  "remove"), normalizer = c("HITS", "CoHITS", "BGRM", "BiRank"),
+  return_mode = c("rows", "columns", "both"), return_data_frame = TRUE,
+  alpha = 0.85, beta = 0.85, max_iter = 200, tol = 1e-04,
+  verbose = FALSE)
 }
 \arguments{
 \item{data}{Data to use for estimating rank. Must contain bipartite graph data, either formatted as an edge list (class data.frame, data.table, or tibble (tbl_df)) or as an adjacency matrix (class matrix or dgCMatrix).}
@@ -52,15 +42,16 @@ bipartite_rank(
 }
 \description{
 Estimate bipartite ranks (centrality scores) of nodes from an edge list or adjacency matrix. Functions as a wrapper for estimating rank based on a number of normalizers (algorithms) including HITS, CoHITS, BGRM, and BiRank. Returns a vector of ranks or (optionally) a list containing a vector for each mode. If the provided data is an edge list, this function returns ranks ordered by the unique values in the supplied edge list.
-
+}
+\details{
 For information about the different normalizers available in this function, see the descriptions for the HITS, CoHITS, BGRM, and BiRank functions. However, below outlines the key differences between the normalizers, with \eqn{K_d} and \eqn{K_p} representing diagonal matrices with generalized degrees (sum of the edge weights) on the diagonal (e.g. \eqn{(K_d)_{ii} = \sum_j w_{ij}} and \eqn{(K_p)_{jj} = \sum_i w_{ij}}).
-\tabular{lll}{ 
-  \strong{Transition matrix} \tab \strong{\eqn{S_p}} \tab \strong{\eqn{S_d}} \cr
-          --------------------- \tab --------------------- \tab --------------------- \cr
-  HITS \tab \eqn{W^T} \tab \eqn{W} \cr
-  Co-HITS \tab \eqn{W^T K_d^{-1}} \tab \eqn{W K_p^{-1}} \cr
-  BGRM \tab \eqn{K_p^{-1} W^T K_d^{-1}} \tab \eqn{K_d^{-1} W K_p^{-1}} \cr
-  BiRank \tab \eqn{K_p^{-1/2} W^T K_d^{-1/2}} \tab \eqn{K_d^{-1/2} W K_p^{-1/2}} 
+\tabular{lll}{
+\strong{Transition matrix} \tab \strong{\eqn{S_p}} \tab \strong{\eqn{S_d}} \cr
+--------------------- \tab --------------------- \tab --------------------- \cr
+HITS \tab \eqn{W^T} \tab \eqn{W} \cr
+Co-HITS \tab \eqn{W^T K_d^{-1}} \tab \eqn{W K_p^{-1}} \cr
+BGRM \tab \eqn{K_p^{-1} W^T K_d^{-1}} \tab \eqn{K_d^{-1} W K_p^{-1}} \cr
+BiRank \tab \eqn{K_p^{-1/2} W^T K_d^{-1/2}} \tab \eqn{K_d^{-1/2} W K_p^{-1/2}}
 }
 }
 \examples{

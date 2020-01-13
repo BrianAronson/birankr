@@ -4,14 +4,9 @@
 \alias{sparsematrix_from_edgelist}
 \title{Convert edge list to sparse matrix}
 \usage{
-sparsematrix_from_edgelist(
-  data,
-  sender_name = NULL,
-  receiver_name = NULL,
-  weight_name = NULL,
-  duplicates = c("add", "remove"),
-  is_bipartite = T
-)
+sparsematrix_from_edgelist(data, sender_name = NULL,
+  receiver_name = NULL, weight_name = NULL, duplicates = c("add",
+  "remove"), is_bipartite = T)
 }
 \arguments{
 \item{data}{Edge list to convert to sparse matrix. Must be in edge list format and of class data.frame, data.table, or tbl_df.}

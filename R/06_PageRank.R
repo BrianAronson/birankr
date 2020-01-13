@@ -1,7 +1,7 @@
 #' Estimate PageRank
 #' @description Estimate PageRank (centrality scores) of nodes from an edge list or adjacency matrix. If data is a bipartite graph, estimates PageRank based on a one-mode projection of the input. If the data is an edge list, returns ranks ordered by the unique values in the supplied edge list (first by unique senders, then by unique receivers).
 #' 
-#' The default optional arguments are likely well-suited for most users. However, it is critical to change the is.bipartite function to FALSE when working with one mode data. In addition, when estimating PageRank in unipartite edge lists that contain nodes with outdegrees or indegrees equal to 0, it is recommended that users append self-ties to the edge list to ensure that the returned PageRank estimates are ordered intuitively.
+#' @details The default optional arguments are likely well-suited for most users. However, it is critical to change the is.bipartite function to FALSE when working with one mode data. In addition, when estimating PageRank in unipartite edge lists that contain nodes with outdegrees or indegrees equal to 0, it is recommended that users append self-ties to the edge list to ensure that the returned PageRank estimates are ordered intuitively.
 #' @param data Data to use for estimating PageRank. Can contain unipartite or bipartite graph data, either formatted as an edge list (class data.frame, data.table, or tibble (tbl_df)) or as an adjacency matrix (class matrix or dgCMatrix).
 #' @param is_bipartite Indicate whether input data is bipartite (rather than unipartite/one-mode). Defaults to TRUE.
 #' @param project_mode Mode for which to return PageRank estimates. Parameter ignored if is_bipartite = FALSE. Defaults to "rows" (the first column of an edge list).
@@ -18,6 +18,9 @@
 #' @keywords Bipartite PageRank rank centrality 
 #' @export
 #' @import Matrix data.table
+#' @md
+#' @references 
+#' Lawrence Page, Sergey Brin, Rajeev Motwani, and Terry Winograd. "The pagerank citation ranking: Bringing order to the web". Technical report, Stanford InfoLab, 1999
 #' @examples
 #' #Prepare one-mode data
 #'     df_one_mode <- data.frame(
@@ -31,7 +34,7 @@
 #'     receiver = unique_ids))
 #'     
 #' #Estimate PageRank in one-mode data
-#'     pagerank <- pagerank(data = df_one_mode, is_bipartite = FALSE) 
+#'     PageRank <- pagerank(data = df_one_mode, is_bipartite = FALSE) 
 #'     
 #' #Estimate PageRank in two-mode data
 #'     df_two_mode <- data.frame(
@@ -148,26 +151,39 @@ pagerank <- function(
               }
           }
 
-  #g) label ranks or make data.frame
-      if(return_data_frame){
-        if(project_mode[1] == "rows"){
-          rank <- data.frame(ID = id_names1, rank = rank)
-        }
-        if(project_mode[1] == "columns"){
-          rank <- data.frame(ID = id_names2, rank = rank)
-        }
-      }else{
-        if(project_mode[1] == "rows"){
-          names(rank) <- id_names1
-        }
-        if(project_mode[1] == "columns"){
-          names(rank) <- id_names2
-        }
-      }
+  #g) format results
+      #i) get variable name id of a data.frame
+          if(any(class(data) == "data.frame")){
+            sender_name <- names(edges)[1]
+            receiver_name <- names(edges)[2]
+          } else{
+            sender_name <- "ID"
+            receiver_name <- "ID"
+          }
+
+      #ii) if return a data frame, format results as a dataframe
+          if(return_data_frame){
+            if(project_mode[1] == "rows"){
+              rank <- data.frame(ID = id_names1, rank = rank)
+              names(rank)[1] <- sender_name
+            }
+            if(project_mode[1] == "columns"){
+              rank <- data.frame(ID = id_names2, rank = rank)
+              names(rank)[1] <- receiver_name
+            }
+          }
+      #iii) if not return data frame, format results as vector
+          if(!return_data_frame){
+            if(project_mode[1] == "rows"){
+              names(rank) <- id_names1
+            }
+            if(project_mode[1] == "columns"){
+              names(rank) <- id_names2
+            }
+          }
 
   #h) return data
       return(rank)
-      
+
 }
-
-
+ 

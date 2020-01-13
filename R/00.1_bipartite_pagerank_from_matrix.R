@@ -34,27 +34,31 @@ bipartite_pagerank_from_matrix <- function(
         Kd_ = .sparseDiagonal(n = length(Kd), x = 1/Kd)
         Kp_ = .sparseDiagonal(n = length(Kp), x = 1/Kp)
     #vi) transform data based on normalizer
-        if(normalizer[1] == 'HITS'){
+        t.normalizer <- tolower(normalizer[1])
+        if(t.normalizer == 'hits'){
           Sp = WT
           Sd = W
         }
-        if(normalizer[1] == 'CoHITS'){
+        if(t.normalizer == 'cohits'){
           Sp = WT %*% Kd_
           Sd = W %*% Kp_
         }
-        if(normalizer[1] == 'BGER'){
+        if(t.normalizer == 'bger'){
           Sp = Kp_ %*% WT
           Sd = Kd_ %*% W
         }
-        if(normalizer[1] == 'BGRM'){
+        if(t.normalizer == 'bgrm'){
           Sp = Kp_ %*% WT %*% Kd_
           Sd = t(Sp)
         }
-        if(normalizer[1] == 'BiRank'){
+        if(t.normalizer == 'birank'){
           Kd_bi = .sparseDiagonal(x = 1/sqrt(Kd))
           Kp_bi = .sparseDiagonal(x = 1/sqrt(Kp))
           Sp = Kp_bi %*% WT %*% Kd_bi
           Sd = t(Sp)
+        }
+        if(is.null(Sp)){
+            stop(paste('Normalizer "', normalizer[1], '" not available. Check spelling.' ))
         }
     #vii) prep data for loop
         d0 = rep(1 / nrow(Kd_), nrow(Kd_))
@@ -65,7 +69,7 @@ bipartite_pagerank_from_matrix <- function(
         for(i in 1:max_iter){
             p = alpha * Sp %*% d_last + (1-alpha) * p0
             d = beta * Sd %*% p_last + (1-beta) * d0
-            if(normalizer[1] == 'HITS'){
+            if(t.normalizer == 'hits'){
                 p = p / sum(p)
                 d = d / sum(d)
             }

@@ -11,8 +11,11 @@ project_to_one_mode(adj_mat, mode = c("rows", "columns"))
 
 \item{mode}{Mode to return. Defaults to projecting by rows.}
 }
+\value{
+A double or complex matrix, with appropriate dimnames taken from x and y.
+}
 \description{
-Create a one-mode projection of a two mode graph. Essentially, converts a rectangular matrix to a square one by taking the cross product of the input matrix. The edge weights in the resulting matrix are equal to the number of transitive ties of each node in the input matrix.
+Create a one-mode projection of a two mode graph. Converts a rectangular matrix to a square one by taking the cross product of the input matrix. The edge weights in the resulting matrix are equal to the number of transitive ties of each node in the input matrix.
 }
 \examples{
 #make matrix

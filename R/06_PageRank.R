@@ -16,6 +16,7 @@
 #' @param tol Maximum tolerance of model convergence. Defaults to 1.0e-4.
 #' @param verbose Show the progress of this function. Defaults to FALSE.
 #' @keywords Bipartite PageRank rank centrality 
+#' @return A dataframe containing each node name and node rank. If return_data_frame changed to FALSE, returns a vector of node ranks.
 #' @export
 #' @import Matrix data.table
 #' @md

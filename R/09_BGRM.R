@@ -1,7 +1,7 @@
 #' BGRM Ranks
 #' @description Estimate BGRM ranks of nodes from an edge list or adjacency matrix. Returns a vector of ranks or (optionally) a list containing a vector for each mode. If the provided data is an edge list, this function returns ranks ordered by the unique values in the selected mode.
 #' 
-#' @details Created by Rui, et. al (2007), BGRM (Bipartite Graph Reinforcement Model) was developed explicitly for use in bipartite graphs. Like every bipartite ranking algorithm in this package, BGRM simultaneously estimates ranks across each mode of the input data. BGRM primarily differs from CoHITS and HITS by symmetrically normalizing the transition matrix, both by the out-degree of the source node and the indegree of the target node.
+#' @details Created by Rui et. al (2007) \doi{10.1145/1291233.1291378}, BGRM (Bipartite Graph Reinforcement Model) was developed explicitly for use in bipartite graphs. Like every bipartite ranking algorithm in this package, BGRM simultaneously estimates ranks across each mode of the input data. BGRM primarily differs from CoHITS and HITS by symmetrically normalizing the transition matrix, both by the out-degree of the source node and the indegree of the target node.
 #' @param data Data to use for estimating BGRM. Must contain bipartite graph data, either formatted as an edge list (class data.frame, data.table, or tibble (tbl_df)) or as an adjacency matrix (class matrix or dgCMatrix).
 #' @param sender_name Name of sender column. Parameter ignored if data is an adjacency matrix. Defaults to first column of edge list.
 #' @param receiver_name Name of sender column. Parameter ignored if data is an adjacency matrix. Defaults to the second column of edge list.
@@ -15,6 +15,7 @@
 #' @param max_iter Maximum number of iterations to run before model fails to converge. Defaults to 200.
 #' @param tol Maximum tolerance of model convergence. Defaults to 1.0e-4.
 #' @param verbose Show the progress of this function. Defaults to FALSE.
+#' @return A dataframe containing each node name and node rank. If return_data_frame changed to FALSE, returns a vector of node ranks.
 #' @keywords Bipartite rank centrality BGRM
 #' @export
 #' @import Matrix data.table

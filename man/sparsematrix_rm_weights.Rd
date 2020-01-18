@@ -9,6 +9,9 @@ sparsematrix_rm_weights(adj_mat)
 \arguments{
 \item{adj_mat}{Sparse matrix of class dgCMatrix}
 }
+\value{
+A sparse matrix of class dgCMatrix.
+}
 \description{
 Removes edge weights from sparse matrices.
 }

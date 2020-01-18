@@ -9,6 +9,9 @@ sparsematrix_from_matrix(adj_mat)
 \arguments{
 \item{adj_mat}{Adjacency matrix.}
 }
+\value{
+A sparse matrix of class dgCMatrix.
+}
 \description{
 Converts adjacency matrices (class "matrix") to a sparse matrices (class "dgCMatrix").
 }

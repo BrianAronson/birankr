@@ -4,6 +4,7 @@
 #' @keywords dgCMatrix matrix
 #' @export
 #' @import Matrix data.table
+#' @return A sparse matrix of class dgCMatrix.
 #' @examples
 #'#make matrix
 #'    my_matrix <- rep(0, 100)

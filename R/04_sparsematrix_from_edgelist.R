@@ -9,6 +9,7 @@
 #' @keywords dgCMatrix
 #' @export
 #' @import Matrix data.table
+#' @return A sparse matrix of class dgCMatrix.
 #' @examples
 #'#make edge.list
 #'    df <- data.frame(

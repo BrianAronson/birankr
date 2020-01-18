@@ -4,11 +4,21 @@
 \alias{pagerank}
 \title{Estimate PageRank}
 \usage{
-pagerank(data, is_bipartite = TRUE, project_mode = c("rows",
-  "columns"), sender_name = NULL, receiver_name = NULL,
-  weight_name = NULL, rm_weights = FALSE, duplicates = c("add",
-  "remove"), return_data_frame = TRUE, alpha = 0.85, max_iter = 200,
-  tol = 1e-04, verbose = FALSE)
+pagerank(
+  data,
+  is_bipartite = TRUE,
+  project_mode = c("rows", "columns"),
+  sender_name = NULL,
+  receiver_name = NULL,
+  weight_name = NULL,
+  rm_weights = FALSE,
+  duplicates = c("add", "remove"),
+  return_data_frame = TRUE,
+  alpha = 0.85,
+  max_iter = 200,
+  tol = 1e-04,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{data}{Data to use for estimating PageRank. Can contain unipartite or bipartite graph data, either formatted as an edge list (class data.frame, data.table, or tibble (tbl_df)) or as an adjacency matrix (class matrix or dgCMatrix).}
@@ -36,6 +46,9 @@ pagerank(data, is_bipartite = TRUE, project_mode = c("rows",
 \item{tol}{Maximum tolerance of model convergence. Defaults to 1.0e-4.}
 
 \item{verbose}{Show the progress of this function. Defaults to FALSE.}
+}
+\value{
+A dataframe containing each node name and node rank. If return_data_frame changed to FALSE, returns a vector of node ranks.
 }
 \description{
 Estimate PageRank (centrality scores) of nodes from an edge list or adjacency matrix. If data is a bipartite graph, estimates PageRank based on a one-mode projection of the input. If the data is an edge list, returns ranks ordered by the unique values in the supplied edge list (first by unique senders, then by unique receivers).

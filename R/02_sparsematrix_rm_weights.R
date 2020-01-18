@@ -4,6 +4,7 @@
 #' @keywords dgCMatrix matrix
 #' @export
 #' @import Matrix
+#' @return A sparse matrix of class dgCMatrix.
 #' @examples
 #'#make matrix
 #'    my_matrix <- sparseMatrix(

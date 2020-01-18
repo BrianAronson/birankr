@@ -1,5 +1,4 @@
 This resubmission addresses the following concerns:
-This resubmission addresses the following concerns:
 
 > If there are references describing the methods in your package, please
 > add these in the Description field of your DESCRIPTION file in the form
@@ -8,7 +7,11 @@ This resubmission addresses the following concerns:
 > authors (year, ISBN:...)
 > with no space after 'doi:', 'arXiv:' and angle brackets for auto-linking.
 
-Done.
+Done. I have added added one reference to the DESCRIPTION file, and I have reformatted function-specific references to match the format outlined above. 
+
+> Also the \value tags have not been added.
+
+Done. I have added \value tags with descriptions of each functions' output. 
 
 ## Test environments
 * local Windows 10 install, R 3.4.1

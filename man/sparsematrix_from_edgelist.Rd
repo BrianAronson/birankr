@@ -4,9 +4,14 @@
 \alias{sparsematrix_from_edgelist}
 \title{Convert edge list to sparse matrix}
 \usage{
-sparsematrix_from_edgelist(data, sender_name = NULL,
-  receiver_name = NULL, weight_name = NULL, duplicates = c("add",
-  "remove"), is_bipartite = T)
+sparsematrix_from_edgelist(
+  data,
+  sender_name = NULL,
+  receiver_name = NULL,
+  weight_name = NULL,
+  duplicates = c("add", "remove"),
+  is_bipartite = T
+)
 }
 \arguments{
 \item{data}{Edge list to convert to sparse matrix. Must be in edge list format and of class data.frame, data.table, or tbl_df.}
@@ -20,6 +25,9 @@ sparsematrix_from_edgelist(data, sender_name = NULL,
 \item{duplicates}{How to treat duplicate edges from edge list. If option "add" is selected, duplicated edges and corresponding edge weights are collapsed via addition. Otherwise, duplicated edges or removed and only the first instance of a duplicated edge is used. Defaults to "add".}
 
 \item{is_bipartite}{Indicate whether input data is bipartite (rather than unipartite/one-mode). Defaults to TRUE.}
+}
+\value{
+A sparse matrix of class dgCMatrix.
 }
 \description{
 Converts edge lists (class data.frame) to sparse matrices (class "dgCMatrix"). For unipartite edge lists that contain any nodes with outdegrees or indegrees equal to 0, it is recommended that users append self-ties to the edge list to ensure that the IDs of the rows and columns are ordered intuitively to the user.

@@ -5,6 +5,82 @@ import scipy
 import scipy.sparse as spa
 
 
+def birank(W, normalizer='HITS',
+    alpha=0.85, beta=0.85, max_iter=200, tol=1.0e-4, verbose=False):
+    """
+    Calculate the PageRank of bipartite networks directly.
+    See paper https://ieeexplore.ieee.org/abstract/document/7572089/
+    for details.
+    Different normalizer yields very different results.
+    More studies are needed for deciding the right one.
+
+    Input:
+        W::scipy's sparse matrix:Adjacency matrix of the bipartite network D*P
+        normalizer::string:Choose which normalizer to use, see the paper for details
+        alpha, beta::float:Damping factors for the rows and columns
+        max_iter::int:Maximum iteration times
+        tol::float:Error tolerance to check convergence
+        verbose::boolean:If print iteration information
+
+    Output:
+         d, p::numpy.ndarray:The BiRank for rows and columns
+    """
+
+    W = W.astype('float', copy=False)
+    WT = W.T
+
+    Kd = scipy.array(W.sum(axis=1)).flatten()
+    Kp = scipy.array(W.sum(axis=0)).flatten()
+    # avoid divided by zero issue
+    Kd[np.where(Kd==0)] += 1
+    Kp[np.where(Kp==0)] += 1
+
+    Kd_ = spa.diags(1/Kd)
+    Kp_ = spa.diags(1/Kp)
+
+    if normalizer == 'HITS':
+        Sp = WT
+        Sd = W
+    elif normalizer == 'CoHITS':
+        Sp = WT.dot(Kd_)
+        Sd = W.dot(Kp_)
+    elif normalizer == 'BGER':
+        Sp = Kp_.dot(WT)
+        Sd = Kd_.dot(W)
+    elif normalizer == 'BGRM':
+        Sp = Kp_.dot(WT).dot(Kd_)
+        Sd = Sp.T
+    elif normalizer == 'BiRank':
+        Kd_bi = spa.diags(1/scipy.sqrt(Kd))
+        Kp_bi = spa.diags(1/scipy.sqrt(Kp))
+        Sp = Kp_bi.dot(WT).dot(Kd_bi)
+        Sd = Sp.T
+
+
+    d0 = scipy.repeat(1 / Kd_.shape[0], Kd_.shape[0])
+    d_last = d0.copy()
+    p0 = scipy.repeat(1 / Kp_.shape[0], Kp_.shape[0])
+    p_last = p0.copy()
+
+    for i in range(max_iter):
+        p = alpha * (Sp.dot(d_last)) + (1-alpha) * p0
+        d = beta * (Sd.dot(p_last)) + (1-beta) * d0
+
+        if normalizer == 'HITS':
+            p = p / p.sum()
+            d = d / d.sum()
+
+        err = scipy.absolute(p - p_last).sum()
+        if verbose:
+            print(i, err)
+        if err < tol:
+            break
+        d_last = d
+        p_last = p
+
+    return d, p
+
+
 class BipartiteNetwork:
     """
     Class for handling bipartite networks using scipy's sparse matrix

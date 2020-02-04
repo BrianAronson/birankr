@@ -1,0 +1,47 @@
+---
+title: "Marvel Social Network Example"
+output: html_document
+---
+### Overview
+This notebook contains an example of how to use the R version of this package to analyze the [Marvel character social network](https://arxiv.org/abs/cond-mat/0202174), a bipartite network of ties between characters and comic books. An edge between a character and a comic book indicates that the character appears in that comic book.
+
+### Installation
+Let's first load the package. Uncomment the first line if you have not yet installed the birankr package.
+
+```{r}
+#install.packages("birankr")
+library(birankr)
+```
+
+We will also need to download the data and format the column names. We will use the cleaned edge list provided at http://syntagmatic.github.io/exposedata/marvel/data/source.csv. 
+
+```{r}
+marvel_df <- 
+  fread("http://syntagmatic.github.io/exposedata/marvel/data/source.csv")
+names(marvel_df) <- c('character', 'comic_book')
+
+```
+
+### Browse data
+To get a sense of the data, let's print the number of unique characters and comic books, and print the first few lines of the data.
+
+
+```{r}
+marvel_df[, lapply(.SD, function(x) length(unique(x)))]
+head(marvel_df)
+```
+
+### Estimate Ranks
+Now we can try the bipartite_rank algorithm with two different normalizers: HITS and CoHITS. Because the first column of this data contains the `character` column, the `character` column will be treated as the senders (or top nodes), and the `comic_book` column will be treated as the receivers (or bottom nodes). Since the algorithm defaults to returning only the rankings of senders, the syntax below will provide us with rank scores for the `character` column.
+
+```{r}
+HITS_ranks <- bipartite_rank(data = marvel_df, normalizer='HITS')
+CoHITS_ranks <- bipartite_rank(data = marvel_df, normalizer='CoHITS')
+```
+
+Notice that the results are slightly different, with the HITS normalizer returning Captain America as the highest ranked/most central comic book character, and the CoHITS normalizer returning Spider-Man as the highest ranked comic book character.
+
+```{r}
+head(HITS_ranks[order(HITS_ranks$rank, decreasing = T), ])
+head(CoHITS_ranks[order(CoHITS_ranks$rank, decreasing = T), ])
+```

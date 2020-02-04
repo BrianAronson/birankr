@@ -1,6 +1,6 @@
 ---
 title: "Marvel Social Network Example"
-output: html_document
+output: github_document
 ---
 ### Overview
 This notebook contains an example of how to use the R version of this package to analyze the [Marvel character social network](https://arxiv.org/abs/cond-mat/0202174), a bipartite network of ties between characters and comic books. An edge between a character and a comic book indicates that the character appears in that comic book.

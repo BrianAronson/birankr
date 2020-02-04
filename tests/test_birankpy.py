@@ -97,7 +97,7 @@ class TestBiRank(unittest.TestCase):
             self.assertEqual(len(top_rank), 3)
             self.assertEqual(len(bottom_rank), 4)
             self.assertAlmostEqual(top_rank.top_birank.sum(), 1.0)
-            self.assertAlmostEqual(top_rank.bottom_birank.sum(), 1.0)
+            self.assertAlmostEqual(bottom_rank.bottom_birank.sum(), 1.0)
 
 
 if __name__ == "__main__":

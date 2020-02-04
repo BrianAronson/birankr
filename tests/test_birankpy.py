@@ -92,7 +92,8 @@ class TestBiRank(unittest.TestCase):
         )
 
     def test_birank(self):
-        top_rank, bottom_rank = self.bn.generate_birank(normalizer='HITS')
+        for normalizer in ['HITS', 'CoHITS', 'BGER', 'BGRM', 'BiRank']:
+        top_rank, bottom_rank = self.bn.generate_birank(normalizer=normalizer)
         self.assertEqual(len(top_rank), 3)
         self.assertEqual(len(bottom_rank), 4)
 

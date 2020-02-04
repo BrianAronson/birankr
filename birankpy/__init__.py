@@ -228,9 +228,11 @@ class BipartiteNetwork:
         returns the ranking values for both the top nodes and bottom nodes.
         """
         d, p = birank(self.W, **kwargs)
-        self.top_ids[self.top_col + '_birank'] = d
-        self.bottom_ids[self.bottom_col + '_birank'] = p
+        top_df = self.top_ids.copy()
+        bottom_df = self.bottom_ids.copy()
+        top_df[self.top_col + '_birank'] = d
+        bottom_df[self.bottom_col + '_birank'] = p
         return (
-            self.top_ids[[self.top_col, self.top_col + '_birank']],
-            self.bottom_ids[[self.bottom_col, self.bottom_col + '_birank']]
+            top_df[[self.top_col, self.top_col + '_birank']],
+            bottom_df[[self.bottom_col, self.bottom_col + '_birank']]
         )

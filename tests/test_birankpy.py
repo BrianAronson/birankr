@@ -11,6 +11,7 @@ import pandas as pd
 import birankpy
 import unittest
 
+
 class TestBipartiteNetwork(unittest.TestCase):
     """
     Test birankpy.BipartiteNetwork
@@ -43,7 +44,10 @@ class TestBipartiteNetwork(unittest.TestCase):
             )
 
     def test_unipartite_projection(self):
-        top_ids, top_uni_adj = self.bn.unipartite_projection(on='top')
+        top_uni_network = self.bn.unipartite_projection(on='top')
+        #top_index = top_uni_network.id_df
+        top_uni_adj = top_uni_network.W
+
         top_index = dict(self.bn.top_ids[['top', 'top_index']].values)
         top_uni_adj_dense = top_uni_adj.toarray()
 
@@ -51,8 +55,9 @@ class TestBipartiteNetwork(unittest.TestCase):
         self.assertEqual(top_uni_adj_dense[top_index[1], top_index[2]], 1)
         self.assertEqual(top_uni_adj_dense[top_index[2], top_index[3]], 2)
 
-
-        bottom_ids, bottom_uni_adj = self.bn.unipartite_projection(on='bottom')
+        bottom_uni_network = self.bn.unipartite_projection(on='bottom')
+        #bottom_ids
+        bottom_uni_adj = bottom_uni_network.W
         bottom_index = dict(self.bn.bottom_ids[['bottom', 'bottom_index']].values)
         bottom_uni_adj_dense = bottom_uni_adj.toarray()
 

@@ -8,8 +8,50 @@ import os
 #sys.path.insert(0, os.path.abspath(os.path.join(testdir, srcdir)))
 
 import pandas as pd
+import networkx as nx
 import birankpy
 import unittest
+
+
+# class TestUnipartiteNetwork(unittest.TestCase):
+    # """
+    # Test birankpy.UnipartiteNetwork
+    # """
+
+class TestPageRank(unittest.TestCase):
+    """
+    Test birankpy.pagerank
+    """
+    def page_rank_two_ways(self, G):
+        nodelist = G.nodes()
+        nx_page_rank = nx.pagerank(G)
+        nx_page_rank_df = pd.DataFrame(
+            [[index, value] for index, value in nx_page_rank.items()],
+            columns=['ID', 'nx_pagerank']
+        )
+
+        nodelist_df = pd.DataFrame(list(nodelist), columns=['ID'])
+        own_page_rank = birankpy.pagerank(
+            nodelist_df, nx.to_scipy_sparse_matrix(G), tol=1.0e-6*len(nodelist)
+        )
+
+        df = nx_page_rank_df.merge(own_page_rank, on='ID')
+        return np.abs((df['nx_pagerank'] - df['pagerank'])).sum()
+
+    def test_page_rank(self):
+        tol = 1.0e-5
+
+        # Case one
+        G = nx.path_graph(10)
+        assert self.page_rank_two_ways(G) < tol
+
+        # Case two
+        G = nx.gnp_random_graph(1000, 0.2)
+        assert self.page_rank_two_ways(G) < tol
+
+        # Case three
+        G = nx.barabasi_albert_graph(1000, 4)
+        assert self.page_rank_two_ways(G) < tol
 
 
 class TestBipartiteNetwork(unittest.TestCase):
@@ -45,7 +87,6 @@ class TestBipartiteNetwork(unittest.TestCase):
 
     def test_unipartite_projection(self):
         top_uni_network = self.bn.unipartite_projection(on='top')
-        #top_index = top_uni_network.id_df
         top_uni_adj = top_uni_network.W
 
         top_index = dict(self.bn.top_ids[['top', 'top_index']].values)
@@ -56,8 +97,8 @@ class TestBipartiteNetwork(unittest.TestCase):
         self.assertEqual(top_uni_adj_dense[top_index[2], top_index[3]], 2)
 
         bottom_uni_network = self.bn.unipartite_projection(on='bottom')
-        #bottom_ids
         bottom_uni_adj = bottom_uni_network.W
+
         bottom_index = dict(self.bn.bottom_ids[['bottom', 'bottom_index']].values)
         bottom_uni_adj_dense = bottom_uni_adj.toarray()
 

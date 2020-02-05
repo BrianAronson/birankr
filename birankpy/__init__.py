@@ -287,10 +287,16 @@ class BipartiteNetwork:
         unipartite_network = UnipartiteNetwork()
         if on == self.bottom_col:
             unipartite_network.set_adj_matrix(
-                self.bottom_ids, self.unipartite_adj)
+                self.bottom_ids,
+                self.unipartite_adj,
+                'bottom_index'
+            )
         else:
             unipartite_network.set_adj_matrix(
-                self.top_ids, self.unipartite_adj)
+                self.top_ids,
+                self.unipartite_adj,
+                'top_index'
+            )
         return unipartite_network
 
     def generate_degree(self):

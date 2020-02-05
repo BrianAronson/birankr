@@ -31,9 +31,10 @@ class TestPageRank(unittest.TestCase):
         )
 
         nodelist_df = pd.DataFrame(list(nodelist), columns=['ID'])
-        own_page_rank = birankpy.pagerank(
-            nodelist_df, nx.to_scipy_sparse_matrix(G), tol=1.0e-6*len(nodelist)
-        )
+
+        un = birankpy.UnipartiteNetwork()
+        un.set_adj_matrix(nodelist_df, nx.to_scipy_sparse_matrix(G))
+        own_page_rank = un.generate_pagerank(tol=1.0e-6*len(nodelist))
 
         df = nx_page_rank_df.merge(own_page_rank, on='ID')
         return np.abs((df['nx_pagerank'] - df['pagerank'])).sum()

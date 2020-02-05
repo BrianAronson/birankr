@@ -75,7 +75,7 @@ bipartite_rank <- function(
           duplicates = duplicates[1]
         )
       }else if(length(class(data)) == 1 & class(data) == "matrix"){
-        sparsematrix_from_matrix(adj_mat)
+        adj_mat <- sparsematrix_from_matrix(data)
       }else if(class(data) != "dgCMatrix"){
         stop('data is not a data.frame, tbl_df, data.table, matrix, or dgCMatrix')
       }

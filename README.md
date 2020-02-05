@@ -71,6 +71,8 @@ Below is a brief outline of each function in this package:
     - Creates a sparsematrix from a matrix
 - **sparsematrix\_rm\_weights**
     - Removes edge weights from a sparsematrix
+    
+Full documentation of `birankr` can be found in [birankr.pdf](birankr.pdf).
 
 ## Python version: birankpy
 ### Overview

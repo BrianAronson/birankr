@@ -8,6 +8,7 @@ import os
 #sys.path.insert(0, os.path.abspath(os.path.join(testdir, srcdir)))
 
 import pandas as pd
+import numpy as np
 import networkx as nx
 import birankpy
 import unittest

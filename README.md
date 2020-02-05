@@ -21,23 +21,31 @@ This package can be directly installed via CRAN with `install.packages("birankr"
 ### Example
 Let's pretend we have a dataset (`df`) containing patient-provider ties (`patient_id` and `provider_id`) among providers that have ever prescribed an opioid:
 
-    df <- data.frame(
-      patient_id = sample(x = 1:10000, size = 10000, replace = T),
-      provider_id = sample(x = 1:5000, size = 10000, replace = T)
-    )
+```r
+df <- data.frame(
+    patient_id = sample(x = 1:10000, size = 10000, replace = T),
+    provider_id = sample(x = 1:5000, size = 10000, replace = T)
+)
+```
 
 We are interested in identifying patients who are likely doctor shopping. We assume that a highly central patient in the patient-doctor network is likely to be a person who is deliberately identifying more "generous" opioid prescribers. We therefore estimate a patients' rank in this network with the CoHITS algorithm:
 
-    df.rank <- br_cohits(data = df)
+```r
+df.rank <- br_cohits(data = df)
+```
    
 Note that rank estimates are scaled according to the size of the network, with more nodes tending to result in smaller ranks. Due to this, it is often advisable to rescale rank estimates more interpretable numbers. For example, we could rescale such that the mean rank = 1 with the following data.table syntax:
 
-    df.rank <- data.table(df.rank)
-    df.rank[, rank := rank/mean(rank)]
+```r
+df.rank <- data.table(df.rank)
+df.rank[, rank := rank/mean(rank)]
+```
 
 Finally, we decide to identify the IDs and ranks of the highest ranking patients in `df`:
 
-    head(df.rank[order(rank, decreasing = T), ], 10)
+```r
+head(df.rank[order(rank, decreasing = T), ], 10)
+```
 
     
 ### Function overview

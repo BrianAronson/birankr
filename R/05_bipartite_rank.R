@@ -26,7 +26,7 @@
 #' @param max_iter Maximum number of iterations to run before model fails to converge. Defaults to 200.
 #' @param tol Maximum tolerance of model convergence. Defaults to 1.0e-4.
 #' @param verbose Show the progress of this function. Defaults to FALSE.
-#' @return A dataframe containing each node name and node rank. If return_data_frame changed to FALSE, returns a vector of node ranks.
+#' @return A dataframe containing each node name and node rank. If return_data_frame changed to FALSE or input data is classed as an adjacency matrix, returns a vector of node ranks.
 #' @keywords Bipartite rank centrality HITS CoHITS BGRM BiRank
 #' @export
 #' @import Matrix data.table
@@ -117,18 +117,8 @@ bipartite_rank <- function(
           }
       #ii) get labels if data is matrix
           if(!any(class(data) == "data.frame")){
-            #1) sender names
-              if(!is.null(rownames(data))){
-                id_names1 <- rownames(data)
-              }else{
-                id_names1 <- 1:ncol(data)
-              }
-            #2) receiver names
-              if(!is.null(colnames(data))){
-                id_names2 <- colnames(data)
-              }else{
-                id_names2 <- 1:ncol(data)
-              }
+              return(rank)
+              break
           }
 
   #g) format results

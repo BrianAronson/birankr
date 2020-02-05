@@ -5,6 +5,159 @@ import scipy
 import scipy.sparse as spa
 
 
+def pagerank(adj, d=0.85, max_iter=200, tol=1.0e-4, verbose=False):
+    """
+    Return the PageRank of the nodes in a graph.
+    This funcion is replica of networkx's pagerank_scipy method with modification.
+    See the original implementation at:
+        https://networkx.github.io/documentation/networkx-1.10/_modules/
+            networkx/algorithms/link_analysis/pagerank_alg.html#pagerank_scipy
+
+    This funciton takes the sparse matrix as input directly, avoiding the overheads
+    of converting the network to a networkx Graph object and back.
+
+    Input:
+        adj::scipy.sparsematrix:Adjacency matrix of the graph
+        d::float:Dumping factor
+        max_iter::int:Maximum iteration times
+        tol::float:Error tolerance to check convergence
+        verbose::boolean:If print iteration information
+
+    Output:
+        ::numpy.ndarray:The PageRank values
+    """
+    adj = adj.astype('float', copy=False)
+    n_node = adj.shape[0]
+    n_inverse = scipy.repeat(1.0 / n_node, n_node)
+    S = scipy.array(adj.sum(axis=1)).flatten()
+    S[S != 0] = 1.0 / S[S != 0]
+    Q = spa.spdiags(S.T, 0, *adj.shape, format='csr')
+    M = Q*adj
+
+    x = scipy.repeat(1.0 / n_node, n_node)
+
+    for i in range(max_iter):
+        xlast = x
+        x = d * (x * M) + (1 - d) * n_inverse
+        err = scipy.absolute(x - xlast).sum()
+        if verbose:
+            print(i, err)
+        if err < tol:
+            break
+
+    return x
+
+
+def birank(W, normalizer='HITS',
+    alpha=0.85, beta=0.85, max_iter=200, tol=1.0e-4, verbose=False):
+    """
+    Calculate the PageRank of bipartite networks directly.
+    See paper https://ieeexplore.ieee.org/abstract/document/7572089/
+    for details.
+    Different normalizer yields very different results.
+    More studies are needed for deciding the right one.
+
+    Input:
+        W::scipy's sparse matrix:Adjacency matrix of the bipartite network D*P
+        normalizer::string:Choose which normalizer to use, see the paper for details
+        alpha, beta::float:Damping factors for the rows and columns
+        max_iter::int:Maximum iteration times
+        tol::float:Error tolerance to check convergence
+        verbose::boolean:If print iteration information
+
+    Output:
+         d, p::numpy.ndarray:The BiRank for rows and columns
+    """
+
+    W = W.astype('float', copy=False)
+    WT = W.T
+
+    Kd = scipy.array(W.sum(axis=1)).flatten()
+    Kp = scipy.array(W.sum(axis=0)).flatten()
+    # avoid divided by zero issue
+    Kd[np.where(Kd==0)] += 1
+    Kp[np.where(Kp==0)] += 1
+
+    Kd_ = spa.diags(1/Kd)
+    Kp_ = spa.diags(1/Kp)
+
+    if normalizer == 'HITS':
+        Sp = WT
+        Sd = W
+    elif normalizer == 'CoHITS':
+        Sp = WT.dot(Kd_)
+        Sd = W.dot(Kp_)
+    elif normalizer == 'BGER':
+        Sp = Kp_.dot(WT)
+        Sd = Kd_.dot(W)
+    elif normalizer == 'BGRM':
+        Sp = Kp_.dot(WT).dot(Kd_)
+        Sd = Sp.T
+    elif normalizer == 'BiRank':
+        Kd_bi = spa.diags(1/scipy.sqrt(Kd))
+        Kp_bi = spa.diags(1/scipy.sqrt(Kp))
+        Sp = Kp_bi.dot(WT).dot(Kd_bi)
+        Sd = Sp.T
+
+
+    d0 = scipy.repeat(1 / Kd_.shape[0], Kd_.shape[0])
+    d_last = d0.copy()
+    p0 = scipy.repeat(1 / Kp_.shape[0], Kp_.shape[0])
+    p_last = p0.copy()
+
+    for i in range(max_iter):
+        p = alpha * (Sp.dot(d_last)) + (1-alpha) * p0
+        d = beta * (Sd.dot(p_last)) + (1-beta) * d0
+
+        if normalizer == 'HITS':
+            p = p / p.sum()
+            d = d / d.sum()
+
+        err = scipy.absolute(p - p_last).sum()
+        if verbose:
+            print(i, err)
+        if err < tol:
+            break
+        d_last = d
+        p_last = p
+
+    return d, p
+
+
+class UnipartiteNetwork:
+    """
+    Class for handling unipartite networks using scipy's sparse matrix
+    Design to for large networkx, but functionalities are limited
+    """
+    def __init__(self):
+        pass
+
+    def set_adj_matrix(self, id_df, W, index_col=None):
+        """
+        Set the adjacency matrix of the network.
+
+        Inputs:
+            id_df::pandas.DataFrame:the mapping between node and index
+            W::scipy.sparsematrix:the adjacency matrix of the network
+                The node order in id_df has to match W
+            index_col::string:column name of the index
+        """
+        self.id_df = id_df
+        self.W = W
+        self.index_col = index_col
+
+    def generate_pagerank(self, **kwargs):
+        """
+        This method performs PageRank on the network to generate the ranking
+        values
+        """
+        pagerank_df = self.id_df.copy()
+        pagerank_df['pagerank'] = pagerank(self.W, **kwargs)
+        if self.index_col:
+            pagerank_df.drop([self.index_col], axis=1, inplace=True)
+        return pagerank_df
+
+
 class BipartiteNetwork:
     """
     Class for handling bipartite networks using scipy's sparse matrix
@@ -131,10 +284,20 @@ class BipartiteNetwork:
         self.unipartite_adj.setdiag(0)
         self.unipartite_adj.eliminate_zeros()
 
+        unipartite_network = UnipartiteNetwork()
         if on == self.bottom_col:
-            return self.bottom_ids, self.unipartite_adj
+            unipartite_network.set_adj_matrix(
+                self.bottom_ids,
+                self.unipartite_adj,
+                'bottom_index'
+            )
         else:
-            return self.top_ids, self.unipartite_adj
+            unipartite_network.set_adj_matrix(
+                self.top_ids,
+                self.unipartite_adj,
+                'top_index'
+            )
+        return unipartite_network
 
     def generate_degree(self):
         """
@@ -145,3 +308,18 @@ class BipartiteNetwork:
         bottom_df = self.df.groupby(self.bottom_col)[self.top_col].nunique()
         bottom_df = bottom_df.to_frame(name='degree').reset_index()
         return top_df, bottom_df
+
+    def generate_birank(self, **kwargs):
+        """
+        This method performs BiRank algorithm on the bipartite network and
+        returns the ranking values for both the top nodes and bottom nodes.
+        """
+        d, p = birank(self.W, **kwargs)
+        top_df = self.top_ids.copy()
+        bottom_df = self.bottom_ids.copy()
+        top_df[self.top_col + '_birank'] = d
+        bottom_df[self.bottom_col + '_birank'] = p
+        return (
+            top_df[[self.top_col, self.top_col + '_birank']],
+            bottom_df[[self.bottom_col, self.bottom_col + '_birank']]
+        )

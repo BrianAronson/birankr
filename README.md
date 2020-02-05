@@ -86,7 +86,7 @@ Implemented with sparse matrix, it's highly efficient.
 - `networkx`
 - `pandas`
 - `numpy`
-- `scipy``
+- `scipy`
 
 ### Installation
 

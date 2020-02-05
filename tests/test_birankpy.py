@@ -14,11 +14,6 @@ import birankpy
 import unittest
 
 
-# class TestUnipartiteNetwork(unittest.TestCase):
-    # """
-    # Test birankpy.UnipartiteNetwork
-    # """
-
 class TestPageRank(unittest.TestCase):
     """
     Test birankpy.pagerank

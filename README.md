@@ -118,6 +118,9 @@ top_birank_df, bottom_birank_df = bn.generate_birank()
 
 For a more detailed example, check out [examples/Marvel_social_network.ipynb](examples/Marvel_social_network.ipynb), where we use the ranking algorithm to analyze the Marvel comic book social network.
 
+### Documentation
+
+See documentation for `birankpy` at [birankpy_doc.md](birankpy_doc.md).
 
 # Community Guidelines
 

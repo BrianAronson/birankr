@@ -13,7 +13,7 @@
 #' @examples
 #'#make edge.list
 #'    df <- data.frame(
-#'      id1 = sample(x = 1:20, size = 100, replace = TRUE), 
+#'      id1 = sample(x = 1:20, size = 100, replace = TRUE),
 #'      id2 = sample(x = 1:10, size = 100, replace = TRUE),
 #'      weight = sample(x = 1:10, size = 100, replace = TRUE)
 #'    )
@@ -32,11 +32,11 @@ sparsematrix_from_edgelist <- function(
     base_weight <- NULL
     w <- NULL
     . <- NULL
-    
-    
+
+
     #i) convert to data.table
         edges <- data.table(data)
-        
+
     #ii) determine ID index
         if(is.null(sender_name) | is.null(receiver_name)){
             id1 = 1
@@ -45,7 +45,7 @@ sparsematrix_from_edgelist <- function(
             id1 = match(sender_name, names(edges))
             id2 = match(receiver_name, names(edges))
         }
-        
+
     #iii) determine weight index
         if(is.null(weight_name)){
             edges[, base_weight := 1]
@@ -53,7 +53,7 @@ sparsematrix_from_edgelist <- function(
         } else{
           weight = match(weight_name, names(edges))
         }
-        
+
     #iv) reduce data to key variables, rename, and reformat
         edges <- edges[, c(id1, id2, weight), with = F]
         names(edges) <- c("id1", "id2", "w")
@@ -69,17 +69,17 @@ sparsematrix_from_edgelist <- function(
         }else(
           edges <- edges[!duplicated(paste(id1,id2)), ]
         )
-        
+
     #vi) account for data that is not bipartite and does not contain all IDs in each column
         if(!is_bipartite){
           unique_id1 <- unique(edges$id1)
           unique_id2 <- unique(edges$id2)
           unique_ids <- unique(c(unique_id1, unique_id2))
-          if(all(unique_id1 %in% unique_id2) & all(unique_id2 %in% unique_id1)){
+          if(!(all(unique_id1 %in% unique_id2) & all(unique_id2 %in% unique_id1))){
             edges <- rbind(edges, data.table(id1 = unique_ids, id2 = unique_ids, w = 0))
           }
         }
-        
+
     #vii) convert ids to indices while retaining current order of unique values
         if(is_bipartite){
             edges[, ':='(
@@ -96,7 +96,7 @@ sparsematrix_from_edgelist <- function(
     #viii) make sparse matrix and drop explicit 0s
         adj_mat <- sparseMatrix(i = edges$id1, j = edges$id2, x = edges$w)
         adj_mat <- drop0(adj_mat)
-        
+
     #ix) return sparse matrix
         return(adj_mat)
 }

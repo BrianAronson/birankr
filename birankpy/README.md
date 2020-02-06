@@ -129,3 +129,38 @@ tD | bP | 1
 The edgelist file needs at least two columns for the top nodes and bottom nodes. An optional column can carry the edge weight.
 You need to specify the columns in the method parameters.
 The network is represented by a D*P dimensional matrix.
+
+```python
+set_edgelist(self, df, top_col, bottom_col, weight_col=None)
+```
+
+Method to set the edgelist.
+
+Inputs:
+
+parameter | type | note
+----------|------|-----
+df | pandas.DataFrame | the edgelist with at least two columns
+top_col | string | column of the edgelist dataframe for top nodes
+bottom_col | string | column of the edgelist dataframe for bottom nodes
+weight_col | string | column of the edgelist dataframe for edge weights
+
+
+The edgelist should be represented by a dataframe.
+The dataframe eeds at least two columns for the top nodes and bottom nodes. An optional column can carry the edge weight.
+You need to specify the columns in the method parameters.
+
+```python
+unipartite_projection(self, on)
+```
+Project the bipartite network to one side of the nodes to generate a unipartite network.
+
+Input:
+
+parameter | type | note
+----------|------|-----
+on | string | Name of the column to project the network on
+
+
+If projected on top nodes, the resulting adjacency matrix has dimension: D\*D.
+If projected on bottom nodes, the resulting adjacency matrix has dimension: P\*P.

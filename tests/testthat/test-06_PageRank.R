@@ -30,29 +30,34 @@ test_that("pagerank accepts senders and receivers", {
   expect_equal(names(rank)[1], c("third_id"))
 })
 
+test_that("pagerank works with unipartite graphs", {
+  df <- data.table(
+    patient_id1 = sample(x = 1:100, size = 200, replace = TRUE),
+    patient_id2 = sample(x = 1:100, size = 200, replace = TRUE)
+  )
+  expect_false(isTRUE(all.equal(
+    pagerank(data = df, is_bipartite = F),
+    pagerank(data = df, is_bipartite = T)
+  )))
+})
 
-# test_that("pagerank returns selected mode", {
-#   df <- data.table(
-#     patient_id = sample(x = 1:100, size = 100, replace = TRUE),
-#     provider_id = sample(x = 1:50, size = 100, replace = TRUE)
-#   )
-#   expect_false(isTRUE(all.equal(pagerank(data = df, return_mode = "rows"), pagerank(data = df, return_mode = "columns"))))
-# })
-#
-#
-# test_that("pagerank returns data frame or vector as requested", {
-#   df <- data.table(
-#     patient_id = sample(x = 1:100, size = 100, replace = TRUE),
-#     provider_id = sample(x = 1:50, size = 100, replace = TRUE)
-#   )
-#   expect_equal(class(pagerank(data = df, return_data_frame = T)), "data.frame")
-#   expect_equal(class(pagerank(data = df, return_data_frame = F)), "numeric")
-# })
-#
-# test_that("pagerank returns selected normalizer", {
-#   df <- data.table(
-#     patient_id = sample(x = 1:100, size = 100, replace = TRUE),
-#     provider_id = sample(x = 1:50, size = 100, replace = TRUE)
-#   )
-#   expect_false(isTRUE(all.equal(pagerank(data = df, normalizer = "HITS"), pagerank(data = df, return_mode = "BiRank"))))
-# })
+test_that("pagerank projects correct mode", {
+  df <- data.table(
+    patient_id = sample(x = 1:100, size = 100, replace = TRUE),
+    provider_id = sample(x = 1:50, size = 100, replace = TRUE)
+  )
+  expect_false(isTRUE(all.equal(
+    pagerank(data = df, project_mode = "rows"),
+    pagerank(data = df, project_mode = "columns")
+  )))
+})
+
+
+test_that("pagerank returns data frame or vector as requested", {
+  df <- data.table(
+    patient_id = sample(x = 1:100, size = 100, replace = TRUE),
+    provider_id = sample(x = 1:50, size = 100, replace = TRUE)
+  )
+  expect_equal(class(pagerank(data = df, return_data_frame = T)), "data.frame")
+  expect_equal(class(pagerank(data = df, return_data_frame = F)), "numeric")
+})

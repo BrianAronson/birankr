@@ -47,6 +47,9 @@ Finally, we decide to identify the IDs and ranks of the highest ranking patients
 head(df.rank[order(rank, decreasing = T), ], 10)
 ```
 
+For a more detailed example, check out [examples/Marvel_social_network.md](examples/Marvel_social_network.md), where we use the ranking algorithm to analyze the Marvel comic book social network.
+
+
     
 ### Function overview
 Below is a brief outline of each function in this package:

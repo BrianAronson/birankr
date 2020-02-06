@@ -5,9 +5,8 @@
 pagerank(adj, d=0.85, max_iter=200, tol=0.0001, verbose=False)
 ```
 
-Return the PageRank of the nodes in a graph.
-This funcion is replica of networkx's pagerank_scipy method with modification.
-See the original implementation in [networkx](https://networkx.github.io/documentation/networkx-1.10/_modules/networkx/algorithms/link_analysis/pagerank_alg.html#pagerank_scipy).
+Return the PageRank of the nodes in a graph using power iteration.
+This funciton takes the sparse matrix as input directly, avoiding the overheads of converting the network to a networkx Graph object and back.
 
 This funciton takes the sparse matrix as input directly, avoiding the overheads
 of converting the network to a networkx Graph object and back.

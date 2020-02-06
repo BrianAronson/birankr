@@ -161,6 +161,7 @@ parameter | type | note
 on | string | Name of the column to project the network on
 
 Output:
+
 | type | note
 ------|-----
 UnipartiteNetwork | The projected unipartite network
@@ -173,6 +174,7 @@ generate_birank(self, **kwargs)
 ```
 
 Output:
+
 variable | type | note
 ---------|------|-----
 top_df   | pandas.DataFrame | BiRank values for the top nodes

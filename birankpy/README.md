@@ -1,14 +1,15 @@
 # API documentation of birankpy
 
-## pagerank
+## PageRank
+
 ```python
 pagerank(adj, d=0.85, max_iter=200, tol=0.0001, verbose=False)
 ```
 
 Return the PageRank of the nodes in a graph using power iteration.
-This funciton takes the sparse matrix as input directly, avoiding the overheads of converting the network to a networkx Graph object and back.
+This function takes the sparse matrix as input directly, avoiding the overheads of converting the network to a networkx Graph object and back.
 
-This funciton takes the sparse matrix as input directly, avoiding the overheads
+This function takes the sparse matrix as input directly, avoiding the overheads
 of converting the network to a networkx Graph object and back.
 
 Input:
@@ -27,7 +28,7 @@ type | note
 ----------|------
 numpy.ndarray|The PageRank values
 
-## birank
+## BiRank
 ```python
 birank(W, normalizer='HITS', alpha=0.85, beta=0.85, max_iter=200, tol=0.0001, verbose=False)
 ```
@@ -102,7 +103,7 @@ Design to for large networkx, but functionalities are limited
 load_edgelist(self, edgelist_path, top_col, bottom_col, weight_col='None', sep=',')
 ```
 
-Method to load the edgelist.
+Method to load an edgelist.
 
 Inputs:
 
@@ -146,7 +147,7 @@ weight_col | string | column of the edgelist dataframe for edge weights
 
 
 The edgelist should be represented by a dataframe.
-The dataframe eeds at least two columns for the top nodes and bottom nodes. An optional column can carry the edge weight.
+The dataframe needs at least two columns for the top nodes and bottom nodes. An optional column can carry the edge weight.
 You need to specify the columns in the method parameters.
 
 ```python

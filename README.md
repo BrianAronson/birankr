@@ -5,14 +5,14 @@ When calculating node centrality measures in bipartite networks, a common approa
 However, the projection can cause information loss and distort the network topology.
 For better node ranking on bipartite networks, it is preferable to use a ranking algorithm that fully accounts for the topology of both modes of the network.
 
-We present the BiRank package, which implements bipartite ranking algorithms HITS, CoHITS, BGRM, and Birank.
+We present the BiRank package, which implements bipartite ranking algorithms HITS, CoHITS, BGRM, and BiRank.
 BiRank provides convenience options for incorporating node-level weights into rank estimations, allowing maximum flexibility for different purpose.
 It can efficiently handle networks with millions of nodes on a single midrange server.
 Both R and Python versions are available.
 
 ## R version: birankr
 ### Overview
-[Cran package](https://cran.r-project.org/web/packages/birankr/index.html) with highly efficient functions for estimating various rank (centrality) measures of nodes in bipartite graphs (two-mode networks) including HITS, CoHITS, BGRM, and Birank. Also provides easy-to-use tools for incorporating or removing edge-weights during rank estimation, projecting two-mode graphs to one-mode, efficiently estimating PageRank in one-mode graphs, and for converting edgelists and matrices to sparseMatrix format. Best of all, the package's rank estimators can work directly with common formats of network data including edgelists (class `data.frame`, `data.table`, or `tbl_df`) and adjacency matrices (class `matrix` or `dgCMatrix`).
+[CRAN package](https://cran.r-project.org/web/packages/birankr/index.html) with highly efficient functions for estimating various rank (centrality) measures of nodes in bipartite graphs (two-mode networks) including HITS, CoHITS, BGRM, and BiRank. Also provides easy-to-use tools for incorporating or removing edge-weights during rank estimation, projecting two-mode graphs to one-mode, efficiently estimating PageRank in one-mode graphs, and for converting edgelists and matrices to sparseMatrix format. Best of all, the package's rank estimators can work directly with common formats of network data including edgelists (class `data.frame`, `data.table`, or `tbl_df`) and adjacency matrices (class `matrix` or `dgCMatrix`).
 
 ### Installation
 
@@ -33,7 +33,7 @@ We are interested in identifying patients who are likely doctor shopping. We ass
 ```r
 df.rank <- br_cohits(data = df)
 ```
-   
+
 Note that rank estimates are scaled according to the size of the network, with more nodes tending to result in smaller ranks. Due to this, it is often advisable to rescale rank estimates more interpretable numbers. For example, we could rescale such that the mean rank = 1 with the following data.table syntax:
 
 ```r
@@ -50,7 +50,7 @@ head(df.rank[order(rank, decreasing = T), ], 10)
 For a more detailed example, check out [examples/Marvel_social_network.md](examples/Marvel_social_network.md), where we use the ranking algorithm to analyze the Marvel comic book social network.
 
 
-    
+
 ### Function overview
 Below is a brief outline of each function in this package:
 
@@ -74,13 +74,14 @@ Below is a brief outline of each function in this package:
     - Creates a sparsematrix from a matrix
 - **sparsematrix\_rm\_weights**
     - Removes edge weights from a sparsematrix
-    
+
+
 Full documentation of `birankr` can be found in [birankr.pdf](birankr.pdf).
 
 ## Python version: birankpy
 ### Overview
-`birankpy` provides functions for estimating various rank measures of nodes in bipartite networks including HITS, CoHITS, BGRM, and Birank.
-It can also project two-mode networks to one-mode, and estimat PageRank on it.
+`birankpy` provides functions for estimating various rank measures of nodes in bipartite networks including HITS, CoHITS, BGRM, and BiRank.
+It can also project two-mode networks to one-mode, and estimate PageRank on it.
 `birankpy` allows user-defined edge weights.
 Implemented with sparse matrix, it's highly efficient.
 

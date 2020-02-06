@@ -1,17 +1,17 @@
 #' Bipartite Ranks
 #' @description Estimate bipartite ranks (centrality scores) of nodes from an edge list or adjacency matrix. Functions as a wrapper for estimating rank based on a number of normalizers (algorithms) including HITS, CoHITS, BGRM, and BiRank. Returns a vector of ranks or (optionally) a list containing a vector for each mode. If the provided data is an edge list, this function returns ranks ordered by the unique values in the supplied edge list.
-#' 
+#'
 #' @details For information about the different normalizers available in this function, see the descriptions for the HITS, CoHITS, BGRM, and BiRank functions. However, below outlines the key differences between the normalizers, with \eqn{K_d} and \eqn{K_p} representing diagonal matrices with generalized degrees (sum of the edge weights) on the diagonal (e.g. \eqn{(K_d)_{ii} = \sum_j w_{ij}} and \eqn{(K_p)_{jj} = \sum_i w_{ij}}).
-#'\tabular{lll}{ 
+#'\tabular{lll}{
 #'   \strong{Transition matrix} \tab \strong{\eqn{S_p}} \tab \strong{\eqn{S_d}} \cr
 #'           --------------------- \tab --------------------- \tab --------------------- \cr
 #'   HITS \tab \eqn{W^T} \tab \eqn{W} \cr
 #'   Co-HITS \tab \eqn{W^T K_d^{-1}} \tab \eqn{W K_p^{-1}} \cr
 #'   BGRM \tab \eqn{K_p^{-1} W^T K_d^{-1}} \tab \eqn{K_d^{-1} W K_p^{-1}} \cr
-#'   BiRank \tab \eqn{K_p^{-1/2} W^T K_d^{-1/2}} \tab \eqn{K_d^{-1/2} W K_p^{-1/2}} 
+#'   BiRank \tab \eqn{K_p^{-1/2} W^T K_d^{-1/2}} \tab \eqn{K_d^{-1/2} W K_p^{-1/2}}
 #'}
-#'  
-#' @md  
+#'
+#' @md
 #' @param data Data to use for estimating rank. Must contain bipartite graph data, either formatted as an edge list (class data.frame, data.table, or tibble (tbl_df)) or as an adjacency matrix (class matrix or dgCMatrix).
 #' @param sender_name Name of sender column. Parameter ignored if data is an adjacency matrix. Defaults to first column of edge list.
 #' @param receiver_name Name of sender column. Parameter ignored if data is an adjacency matrix. Defaults to the second column of edge list.
@@ -26,7 +26,7 @@
 #' @param max_iter Maximum number of iterations to run before model fails to converge. Defaults to 200.
 #' @param tol Maximum tolerance of model convergence. Defaults to 1.0e-4.
 #' @param verbose Show the progress of this function. Defaults to FALSE.
-#' @return A dataframe containing each node name and node rank. If return_data_frame changed to FALSE, returns a vector of node ranks.
+#' @return A dataframe containing each node name and node rank. If return_data_frame changed to FALSE or input data is classed as an adjacency matrix, returns a vector of node ranks. Does not return node ranks for isolates.
 #' @keywords Bipartite rank centrality HITS CoHITS BGRM BiRank
 #' @export
 #' @import Matrix data.table
@@ -75,8 +75,11 @@ bipartite_rank <- function(
           duplicates = duplicates[1]
         )
       }else if(length(class(data)) == 1 & class(data) == "matrix"){
-        sparsematrix_from_matrix(adj_mat)
-      }else if(class(data) != "dgCMatrix"){
+        adj_mat <- sparsematrix_from_matrix(data)
+      }else if(class(data) == "dgCMatrix"){
+        adj_mat <- data
+      }
+      else if(class(data) != "dgCMatrix"){
         stop('data is not a data.frame, tbl_df, data.table, matrix, or dgCMatrix')
       }
 
@@ -85,7 +88,7 @@ bipartite_rank <- function(
           if(verbose) message("Removing edge weights...")
           adj_mat <- sparsematrix_rm_weights(adj_mat)
       }
-          
+
   #e) estimate bipartite rank
       if(verbose) message("Estimating bipartite rank...")
       rank <- bipartite_pagerank_from_matrix(
@@ -117,18 +120,8 @@ bipartite_rank <- function(
           }
       #ii) get labels if data is matrix
           if(!any(class(data) == "data.frame")){
-            #1) sender names
-              if(!is.null(rownames(data))){
-                id_names1 <- rownames(data)
-              }else{
-                id_names1 <- 1:ncol(data)
-              }
-            #2) receiver names
-              if(!is.null(colnames(data))){
-                id_names2 <- colnames(data)
-              }else{
-                id_names2 <- 1:ncol(data)
-              }
+              return(rank)
+              break
           }
 
   #g) format results
@@ -137,11 +130,11 @@ bipartite_rank <- function(
             sender_name <- names(edges)[1]
             receiver_name <- names(edges)[2]
           } else{
-            sender_name <- "ID"  
+            sender_name <- "ID"
             receiver_name <- "ID"
           }
 
-      #ii) if return a data frame, format results as a dataframe 
+      #ii) if return a data frame, format results as a dataframe
           if(return_data_frame){
             if(return_mode[1] == "rows"){
               rank <- data.frame(ID = id_names1, rank = rank)

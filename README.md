@@ -107,6 +107,8 @@ top_node | bottom_node
 1 | a
 1 | b
 2 | a
+...|..
+123| z
 
 
 To performing BiRank on, just:

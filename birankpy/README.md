@@ -87,7 +87,7 @@ index_col | string | column name of the index
 generate_pagerank(self, **kwargs)
 ```
 
-Generate the PageRank value for the network using `pagerank()`.
+Generate the PageRank values for the network using `pagerank()`.
 The parameters are the same with `pagerank()`.
 
 
@@ -161,6 +161,24 @@ parameter | type | note
 ----------|------|-----
 on | string | Name of the column to project the network on
 
+Output:
+| type | note
+------|-----
+UnipartiteNetwork | The projected unipartite network
 
 If projected on top nodes, the resulting adjacency matrix has dimension: D\*D.
 If projected on bottom nodes, the resulting adjacency matrix has dimension: P\*P.
+
+```python
+generate_birank(self, **kwargs)
+```
+
+Output:
+variable | type | note
+---------|------|-----
+top_df   | pandas.DataFrame | BiRank values for the top nodes
+bottom_df   | pandas.DataFrame | BiRank values for bottom nodes
+
+
+Generate the BiRank values for the top and bottom nodes simultaneously using `birank()`.
+The parameters are the same with `birank()`.

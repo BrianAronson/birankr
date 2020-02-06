@@ -111,7 +111,7 @@ top_node | bottom_node
 123| z
 
 
-To performing BiRank on, just:
+To performing BiRank on this bipartite network, just:
 
 ```python
 bn = birankpy.BipartiteNetwork()

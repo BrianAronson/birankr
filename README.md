@@ -8,7 +8,7 @@ For better node ranking on bipartite networks, it is preferable to use a ranking
 We present the BiRank package, which implements bipartite ranking algorithms HITS, CoHITS, BGRM, and Birank.
 BiRank provides convenience options for incorporating node-level weights into rank estimations, allowing maximum flexibility for different purpose.
 It can efficiently handle networks with millions of nodes on a single midrange server.
-Both R and Python versions.
+Both R and Python versions are available.
 
 ## R version: birankr
 ### Overview
@@ -81,11 +81,19 @@ It can also project two-mode networks to one-mode, and estimat PageRank on it.
 `birankpy` allows user-defined edge weights.
 Implemented with sparse matrix, it's highly efficient.
 
+### Dependencies
+
+- `networkx`
+- `pandas`
+- `numpy`
+- `scipy`
+
 ### Installation
 
-Install locally, move to the root directory of this projection and run:
+Install with `pip`:
+
 ```bash
-pip install -e ./
+pip install birankpy
 ```
 
 ### Example
@@ -108,8 +116,11 @@ bn.set_edgelist(edgelist_df,  top_col='top_node', bottom_col='bottom_node')
 top_birank_df, bottom_birank_df = bn.generate_birank()
 ```
 
-For a more detailed example, check out `examples/Marvel_social_network.ipynb`, where we use the ranking algorithm to analyze the Marvel comic book social network.
+For a more detailed example, check out [examples/Marvel_social_network.ipynb](examples/Marvel_social_network.ipynb), where we use the ranking algorithm to analyze the Marvel comic book social network.
 
+### Documentation
+
+See documentation for `birankpy` at [birankpy_doc.md](birankpy_doc.md).
 
 # Community Guidelines
 

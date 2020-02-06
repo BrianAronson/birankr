@@ -115,8 +115,8 @@ bipartite_rank <- function(
                 }
             #2) pull IDs for each mode in order of function
                 edges <- data[, c(id1, id2), with = F]
-                id_names1 <- as.character(unlist(unique(edges[, id1, with = F])))
-                id_names2 <- as.character(unlist(unique(edges[, id2, with = F])))
+                id_names1 <- as.character(unlist(unique(data[, id1, with = F])))
+                id_names2 <- as.character(unlist(unique(data[, id2, with = F])))
           }
       #ii) get labels if data is matrix
           if(!any(class(data) == "data.frame")){

@@ -82,9 +82,6 @@ def birank(W, normalizer='HITS',
     elif normalizer == 'CoHITS':
         Sp = WT.dot(Kd_)
         Sd = W.dot(Kp_)
-    elif normalizer == 'BGER':
-        Sp = Kp_.dot(WT)
-        Sd = Kd_.dot(W)
     elif normalizer == 'BGRM':
         Sp = Kp_.dot(WT).dot(Kd_)
         Sd = Sp.T

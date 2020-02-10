@@ -1,5 +1,7 @@
 # BiRank R and Python package
 
+[![Downloads](https://pepy.tech/badge/birankpy)](https://pepy.tech/project/birankpy)
+
 Bipartite (two-mode) networks are ubiquitous.
 When calculating node centrality measures in bipartite networks, a common approach is to apply PageRank on the one-mode projection of the network.
 However, the projection can cause information loss and distort the network topology.

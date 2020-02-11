@@ -1,5 +1,6 @@
 # BiRank R and Python package
 
+[![PyPI version](https://badge.fury.io/py/birankpy.svg)](https://badge.fury.io/py/birankpy)
 [![Downloads](https://pepy.tech/badge/birankpy)](https://pepy.tech/project/birankpy)
 
 Bipartite (two-mode) networks are ubiquitous.

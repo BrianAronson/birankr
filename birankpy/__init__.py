@@ -7,12 +7,7 @@ import scipy.sparse as spa
 
 def pagerank(adj, d=0.85, max_iter=200, tol=1.0e-4, verbose=False):
     """
-    Return the PageRank of the nodes in a graph.
-    This funcion is replica of networkx's pagerank_scipy method with modification.
-    See the original implementation at:
-        https://networkx.github.io/documentation/networkx-1.10/_modules/
-            networkx/algorithms/link_analysis/pagerank_alg.html#pagerank_scipy
-
+    Return the PageRank of the nodes in a graph using power iteration.
     This funciton takes the sparse matrix as input directly, avoiding the overheads
     of converting the network to a networkx Graph object and back.
 
@@ -28,18 +23,18 @@ def pagerank(adj, d=0.85, max_iter=200, tol=1.0e-4, verbose=False):
     """
     adj = adj.astype('float', copy=False)
     n_node = adj.shape[0]
-    n_inverse = scipy.repeat(1.0 / n_node, n_node)
-    S = scipy.array(adj.sum(axis=1)).flatten()
+    n_inverse = np.repeat(1.0 / n_node, n_node)
+    S = np.array(adj.sum(axis=1)).flatten()
     S[S != 0] = 1.0 / S[S != 0]
     Q = spa.spdiags(S.T, 0, *adj.shape, format='csr')
     M = Q*adj
 
-    x = scipy.repeat(1.0 / n_node, n_node)
+    x = np.repeat(1.0 / n_node, n_node)
 
     for i in range(max_iter):
         xlast = x
         x = d * (x * M) + (1 - d) * n_inverse
-        err = scipy.absolute(x - xlast).sum()
+        err = np.absolute(x - xlast).sum()
         if verbose:
             print(i, err)
         if err < tol:
@@ -87,9 +82,6 @@ def birank(W, normalizer='HITS',
     elif normalizer == 'CoHITS':
         Sp = WT.dot(Kd_)
         Sd = W.dot(Kp_)
-    elif normalizer == 'BGER':
-        Sp = Kp_.dot(WT)
-        Sd = Kd_.dot(W)
     elif normalizer == 'BGRM':
         Sp = Kp_.dot(WT).dot(Kd_)
         Sd = Sp.T
@@ -100,9 +92,9 @@ def birank(W, normalizer='HITS',
         Sd = Sp.T
 
 
-    d0 = scipy.repeat(1 / Kd_.shape[0], Kd_.shape[0])
+    d0 = np.repeat(1 / Kd_.shape[0], Kd_.shape[0])
     d_last = d0.copy()
-    p0 = scipy.repeat(1 / Kp_.shape[0], Kp_.shape[0])
+    p0 = np.repeat(1 / Kp_.shape[0], Kp_.shape[0])
     p_last = p0.copy()
 
     for i in range(max_iter):
@@ -113,7 +105,7 @@ def birank(W, normalizer='HITS',
             p = p / p.sum()
             d = d / d.sum()
 
-        err = scipy.absolute(p - p_last).sum()
+        err = np.absolute(p - p_last).sum()
         if verbose:
             print(i, err)
         if err < tol:
@@ -127,7 +119,7 @@ def birank(W, normalizer='HITS',
 class UnipartiteNetwork:
     """
     Class for handling unipartite networks using scipy's sparse matrix
-    Design to for large networkx, but functionalities are limited
+    Designed to for large networkx, but functionalities are limited
     """
     def __init__(self):
         pass
@@ -161,7 +153,7 @@ class UnipartiteNetwork:
 class BipartiteNetwork:
     """
     Class for handling bipartite networks using scipy's sparse matrix
-    Design to for large networkx, but functionalities are limited
+    Designed to for large networkx, but functionalities are limited
     """
     def __init__(self):
         pass

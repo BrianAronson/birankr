@@ -104,7 +104,7 @@ pip install birankpy
 ```
 
 ### Example
-Let's pretend we have a edge list `edgelist_df` containing ties between top nodes and bottom nodes:
+Let's pretend we have an edge list `edgelist_df` containing ties between top nodes and bottom nodes:
 
 top_node | bottom_node
 ------------ | -------------
@@ -129,7 +129,7 @@ For a more detailed example, check out [examples/Marvel_social_network.ipynb](ex
 
 ### Documentation
 
-See documentation for `birankpy` at [birankpy_doc.md](birankpy_doc.md).
+See documentation for `birankpy` at [birankpy doc](birankpy/README.md).
 
 # Community Guidelines
 

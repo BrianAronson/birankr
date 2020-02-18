@@ -48,7 +48,7 @@ br_bgrm(
 \item{verbose}{Show the progress of this function. Defaults to FALSE.}
 }
 \value{
-A dataframe containing each node name and node rank. If return_data_frame changed to FALSE, returns a vector of node ranks.
+A dataframe containing each node name and node rank. If return_data_frame changed to FALSE or input data is classed as an adjacency matrix, returns a vector of node ranks. Does not return node ranks for isolates.
 }
 \description{
 Estimate BGRM ranks of nodes from an edge list or adjacency matrix. Returns a vector of ranks or (optionally) a list containing a vector for each mode. If the provided data is an edge list, this function returns ranks ordered by the unique values in the selected mode.

@@ -35,7 +35,7 @@ Converts edge lists (class data.frame) to sparse matrices (class "dgCMatrix"). F
 \examples{
 #make edge.list
    df <- data.frame(
-     id1 = sample(x = 1:20, size = 100, replace = TRUE), 
+     id1 = sample(x = 1:20, size = 100, replace = TRUE),
      id2 = sample(x = 1:10, size = 100, replace = TRUE),
      weight = sample(x = 1:10, size = 100, replace = TRUE)
    )

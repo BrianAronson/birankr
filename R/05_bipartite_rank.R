@@ -121,7 +121,6 @@ bipartite_rank <- function(
       #ii) get labels if data is matrix
           if(!any(class(data) == "data.frame")){
               return(rank)
-              break
           }
 
   #g) format results

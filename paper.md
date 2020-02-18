@@ -50,8 +50,6 @@ The algorithms mainly differ in the way they normalize node ranks in the iterati
 $K_T$ and $K_B$ are diagonal matrices with generalized degrees (sum of the edge weights) on the diagonal, i.e.  $(K_T)_{ii} = \sum_j w_{ij}$ and $(K_B)_{jj} = \sum_i w_{ij}$.
 $w_{ij}$ is the element on row $i$ and column $j$ of the bipartite network adjacency matrix $W^{|T|\times |B|}$.
 
-%HITS performs no normalization, CoHITS normalizes the transition matrix by the out-degree of the source nodes, and both BGRM and BiRank normalizes the ranking values by the degrees of both the nodes that initiate the propagation and nodes that receive the propagation (with differences only in how they transform the transition matrix). For most use-cases, we recommend estimating node ranks with CoHITS, BGRM, or BiRank. 
-
 Our guiding philosophy is to make the package as flexible as possible, given the diverse array of problems and data formats that are used in network analysis, while achieving good performance.
 We therefore provide a number of convenience options for incorporating edge weights into rank estimations, estimating ranks on different types of input (edge lists, dense matrices, and sparse matrices), multiple file formats (as vectors, lists, or data frames), and for estimating PageRank on the one-mode projection of a network.
 Moreover, this implementation uses efficient data storage and algorithms to ensure good performance and scalability.
@@ -64,19 +62,19 @@ The Marvel Universe collaboration network comprises a network of affiliation wit
 
 : Top five characters in the Marvel Universe collaboration network ranked by HITS, CoHITS and PageRank with one-mode projection. \label{marvel_rank}
 
-+---------+-------+----------+----------------------------------+
-| **Rank**    | **HITS**  |   **CoHITS** | **Projection+PageRank**              |
-+=========+=======+==========+==================================+
-| 1st     | Captain America | Spider-man | Captain America |
-+---------+-------+----------+----------------------------------+
-| 2nd     | Iron man   | Captain America | Spider-man |
-+---------+-------+----------+----------------------------------+
-| 3rd     | Thing | Iron man | Iron man |
-+---------+-------+----------+----------------------------------+
-| 4th     | Human torch | Hulk | Wolverine |
-+---------+-------+----------+----------------------------------+
-| 5th     | Mr. fantastic | Thing | Thor |
-+---------+-------+----------+----------------------------------+
++---------+-----------------+-----------------+------------------------+
+| **Rank**| **HITS**        | **CoHITS**      |**Projection+PageRank** |
++=========+=================+=================+========================+
+| 1st     | Captain America | Spider-man      | Captain America        |
++---------+-----------------+-----------------+------------------------+
+| 2nd     | Iron man        | Captain America | Spider-man             |
++---------+-----------------+-----------------+------------------------+
+| 3rd     | Thing           | Iron man        | Iron man               |
++---------+-----------------+-----------------+------------------------+
+| 4th     | Human torch     | Hulk            | Wolverine              |
++---------+-----------------+-----------------+------------------------+
+| 5th     | Mr. fantastic   | Thing           | Thor                   |
++---------+-----------------+-----------------+------------------------+
 
 
 Table \ref{marvel_rank} presents the five characters with the highest ranking values from each algorithm.
@@ -86,7 +84,6 @@ PageRank on the one mode projection first converts comic-character ties to chara
 
 Differences between how HITS and CoHITS estimate ranks on the Marvel Universe collaboration network are more complicated. CoHITS normalizes the transition matrix by the outdegree of the source nodes, and therefore places somewhat less value on connections from highly connected characters and from highly connected comic books than HITS. As a result, CoHITS tends to assign higher ranks to characters who are connected to a more diverse array of comic books than does HITS. This difference is best illustrated by the inclusion of Mr. Fantastic in HITS' top-ranked characters and the inclusion of Spider Man in CoHITS' top-ranked characters: Spider Man appears in nearly twice as many comic books as Mr. Fantastic and collaborates with a significantly wider cast of characters than Mr. Fantastic; however, Mr. Fantastic tends to appear in highly central comic books with large character casts. It is open to interpretation as to which measure of centrality is better, but in many applications, we tend to prefer CoHITS over HITS as CoHITS ranks are less influenced by the presence of outliers with extreme degrees.
 
-%These algorithms tend to estimate more similar ranks to nodes with very high-degrees, but less similar ranks for nodes with lower degree. In addition, the algorithms tend to estimate more similar node-ranks when applied to networks with highly skewed degree distributions.
 It is also worth mentioning that assigning different edge weights to the network can significantly affect ranking results.
 Our package offers flexibility by allowing different combinations of algorithms and edge weights.
 We leave the choice to the users' discretion.
@@ -96,3 +93,5 @@ Both R (birankr) and Python (birankpy) versions of the package are available. Th
 # Acknowledgement
 
 The authors acknowledge support from National Institute on Drug Abuse (grant R01 DA039928).
+
+# References

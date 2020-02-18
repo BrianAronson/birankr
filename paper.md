@@ -34,8 +34,8 @@ To overcome the issues of one-mode projection, we present BiRank, a R and Python
 BiRank package contains several ranking algorithms that generalize PageRank to bipartite networks by propagating the probability mass (or importance scores) across two sides of the networks repeatedly using the following equations:
 
 $$
-    \vec{T} &= \alpha S_T \vec{B} + (1-\alpha)\vec{T}^0 \\
-    \vec{B} &= \beta S_B \vec{T} + (1-\beta)\vec{B}^0
+    \vec{T} = \alpha S_T \vec{B} + (1-\alpha)\vec{T}^0 \\
+    \vec{B} = \beta S_B \vec{T} + (1-\beta)\vec{B}^0
 $$
 until they converge (see Figure \ref{illustration}(a)), where $\vec{T},\vec{B}$ are the ranking values for the top and bottom nodes, elements in $\vec{T}^0$ and $\vec{B}^0$ are set to $1/|T|$ and $1/|B|$ by default, $\alpha$ and $\beta$ are damping factors and set to 0.85 by default, $S_T, S_B$ are the transition matrices.
 Unlike the one-mode projected PageRank, BiRank algorithms generate the ranking values for nodes from both sides simultaneously and take account of the full network topology without any information loss.

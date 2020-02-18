@@ -42,7 +42,6 @@ Unlike the one-mode projected PageRank, BiRank algorithms generate the ranking v
 ![(a) BiRank algorithms perform the ranking process on the bipartite networks directly and generate the ranking values for the top and bottom nodes simultaneously. (b) A bipartite network with three top nodes and four bottom nodes. (c) After the one-mode projection, a unipartite network of the bottom nodes is generated. PageRank can be performed to generate the ranking values of the bottom nodes. \label{illustration}](illustration.png) 
 
 Our package implements most notable and straightforward operationalizations of biparitite PageRanks including HITS [@kleinberg1999authoritative; @liao2014network], CoHITS [@deng2009generalized], BGRM [@rui2007bipartite], and Birank [@he2016birank].
-%Each of these methods uses a markov process for simultaneously estimating ranks across each mode of the input data.
 The algorithms mainly differ in the way they normalize node ranks in the iterations (see Table \ref{normalizers}).
 
 : A summary of transition matrices used in different BiRank algorithms.
@@ -66,10 +65,10 @@ We therefore provide a number of convenience options for incorporating edge weig
 Moreover, this implementation uses efficient data storage and algorithms to ensure good performance and scalability.
 For example, regardless of the algorithm of choice, it takes less than 10 seconds and less than 1GB of RAM to estimate ranks on a bipartite network containing half million top nodes, more than two million bottom nodes, and about three million edges on a machine with 16 AMD EPYC 7000 series 2.5 GHz processors.
 
-As a demonstration, we apply HITS, CoHITS, and PageRank to the one-mode projection on the Marvel Universe collaboration network  [@alberich2002marvel].
+As a demonstration, we apply HITS, CoHITS, and one-mode projected PageRank to the Marvel Universe collaboration network  [@alberich2002marvel].
 The Marvel Universe collaboration network comprises a network of affiliation with ties between every Marvel comic book (n = 12,849) and every character (n = 6,444) who appeared in those books. To give a sense of this network's structure, Figure \ref{marvel_network} illustrates a small sociogram of characters within ten comic books of this dataset.
 
-![Sociogram of character-book ties within 10 comic books of Marvel Universe collaboration network. \label{marvel_network}](marvel_network.png)
+![Sociogram of character-book ties within 10 comic books of the Marvel Universe collaboration network. \label{marvel_network}](marvel_network.png)
 
 Table \ref{marvel_rank} presents the five characters with the highest ranking values from each algorithm.
 Results are similar, with Captain America and Iron Man occurring in all three ranking algorithms. 

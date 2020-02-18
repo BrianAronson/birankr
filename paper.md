@@ -50,6 +50,20 @@ The algorithms mainly differ in the way they normalize node ranks in the iterati
 $K_T$ and $K_B$ are diagonal matrices with generalized degrees (sum of the edge weights) on the diagonal, i.e.  $(K_T)_{ii} = \sum_j w_{ij}$ and $(K_B)_{jj} = \sum_i w_{ij}$.
 $w_{ij}$ is the element on row $i$ and column $j$ of the bipartite network adjacency matrix $W^{|T|\times |B|}$.
 
++---------+-----------------+-----------------+------------------------+
+| **Rank**| **HITS**        | **CoHITS**      |**Projection+PageRank** |
++=========+=================+=================+========================+
+| 1st     | Captain America | Spider-man      | Captain America        |
++---------+-----------------+-----------------+------------------------+
+| 2nd     | Iron $\beta$    | Captain America | Spider-man             |
++---------+-----------------+-----------------+------------------------+
+| 3rd     | Thing           | Iron man        | Iron man               |
++---------+-----------------+-----------------+------------------------+
+| 4th     | Human torch     | Hulk            | Wolverine              |
++---------+-----------------+-----------------+------------------------+
+| 5th     | Mr. fantastic   | Thing           | Thor                   |
++---------+-----------------+-----------------+------------------------+
+
 Our guiding philosophy is to make the package as flexible as possible, given the diverse array of problems and data formats that are used in network analysis, while achieving good performance.
 We therefore provide a number of convenience options for incorporating edge weights into rank estimations, estimating ranks on different types of input (edge lists, dense matrices, and sparse matrices), multiple file formats (as vectors, lists, or data frames), and for estimating PageRank on the one-mode projection of a network.
 Moreover, this implementation uses efficient data storage and algorithms to ensure good performance and scalability.

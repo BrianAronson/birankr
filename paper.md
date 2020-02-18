@@ -48,19 +48,7 @@ The algorithms mainly differ in the way they normalize node ranks in the iterati
 
 : A summary of transition matrices used in different BiRank algorithms.
 $K_T$ and $K_B$ are diagonal matrices with generalized degrees (sum of the edge weights) on the diagonal, i.e.  $(K_T)_{ii} = \sum_j w_{ij}$ and $(K_B)_{jj} = \sum_i w_{ij}$.
-$w_{ij}$ is the element on row $i$ and column $j$ of the bipartite network adjacency matrix $W^{|T|\times |B|}$. \label{normalizers}
-
-+-------------------+---------+---------+
-| **Transition matrix** |  $S_B$  |  $S_T$  |
-+===================+=========+=========+
-| HITS              | $W^\top$| $W$     |
-+-------------------+---------+---------+
-| Co-HITS           | $W^\top K_T^{-1}$ | $W K_B^{-1}$ |
-+-------------------+---------+---------+
-| BGRM              | $K_B^{-1} W^\top K_T^{-1}$ | $K_T^{-1} W K_B^{-1}$ |
-+-------------------+---------+---------+
-| Birank            | $K_B^{-1/2} W^\top K_T^{-1/2}$ | $K_T^{-1/2} W K_B^{-1/2}$ |
-+-------------------+---------+---------+
+$w_{ij}$ is the element on row $i$ and column $j$ of the bipartite network adjacency matrix $W^{|T|\times |B|}$.
 
 %HITS performs no normalization, CoHITS normalizes the transition matrix by the out-degree of the source nodes, and both BGRM and BiRank normalizes the ranking values by the degrees of both the nodes that initiate the propagation and nodes that receive the propagation (with differences only in how they transform the transition matrix). For most use-cases, we recommend estimating node ranks with CoHITS, BGRM, or BiRank. 
 

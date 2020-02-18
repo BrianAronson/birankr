@@ -67,10 +67,16 @@ We therefore provide a number of convenience options for incorporating edge weig
 Moreover, this implementation uses efficient data storage and algorithms to ensure good performance and scalability.
 For example, regardless of the algorithm of choice, it takes less than 10 seconds and less than 1GB of RAM to estimate ranks on a bipartite network containing half million top nodes, more than two million bottom nodes, and about three million edges on a machine with 16 AMD EPYC 7000 series 2.5 GHz processors.
 
-![Sociogram of character-book ties within 10 comic books of Marvel Universe collaboration network. \label{marvel_network}](marvel_network.png)
-
 As a demonstration, we apply HITS, CoHITS, and PageRank to the one-mode projection on the Marvel Universe collaboration network  [@alberich2002marvel].
 The Marvel Universe collaboration network comprises a network of affiliation with ties between every Marvel comic book (n = 12,849) and every character (n = 6,444) who appeared in those books. To give a sense of this network's structure, Figure \ref{marvel_network} illustrates a small sociogram of characters within ten comic books of this dataset.
+
+![Sociogram of character-book ties within 10 comic books of Marvel Universe collaboration network. \label{marvel_network}](marvel_network.png)
+
+Table \ref{marvel_rank} presents the five characters with the highest ranking values from each algorithm.
+Results are similar, with Captain America and Iron Man occurring in all three ranking algorithms. 
+However, discrepancies arise from differences in the underlying ranking algorithms and how they interact with the network's structure. 
+PageRank on the one mode projection first converts comic-character ties to character-character ties. Without information about the structure of characters-comic ties, PageRank mainly prioritizes nodes with a large number of transitive ties in the original network. For example, Wolverine has a higher PageRank than the Thing but Wolverine appears in much fewer comic books than the Thing. Instead, Wolverine's high PageRank is a result of his co-presence in comic books with large numbers of other characters. In contrast, the Thing tends to repeatedly appear in central comic books with other central characters in the Marvel universe, hence the Thing has a high CoHITS rank but a lower PageRank than Wolverine.
+
 
 : Top five characters in the Marvel Universe collaboration network ranked by HITS, CoHITS and PageRank with one-mode projection. \label{marvel_rank}
 
@@ -87,12 +93,6 @@ The Marvel Universe collaboration network comprises a network of affiliation wit
 +---------+-----------------+-----------------+------------------------+
 | 5th     | Mr. fantastic   | Thing           | Thor                   |
 +---------+-----------------+-----------------+------------------------+
-
-
-Table \ref{marvel_rank} presents the five characters with the highest ranking values from each algorithm.
-Results are similar, with Captain America and Iron Man occurring in all three ranking algorithms. 
-However, discrepancies arise from differences in the underlying ranking algorithms and how they interact with the network's structure. 
-PageRank on the one mode projection first converts comic-character ties to character-character ties. Without information about the structure of characters-comic ties, PageRank mainly prioritizes nodes with a large number of transitive ties in the original network. For example, Wolverine has a higher PageRank than the Thing but Wolverine appears in much fewer comic books than the Thing. Instead, Wolverine's high PageRank is a result of his co-presence in comic books with large numbers of other characters. In contrast, the Thing tends to repeatedly appear in central comic books with other central characters in the Marvel universe, hence the Thing has a high CoHITS rank but a lower PageRank than Wolverine.
 
 Differences between how HITS and CoHITS estimate ranks on the Marvel Universe collaboration network are more complicated. CoHITS normalizes the transition matrix by the outdegree of the source nodes, and therefore places somewhat less value on connections from highly connected characters and from highly connected comic books than HITS. As a result, CoHITS tends to assign higher ranks to characters who are connected to a more diverse array of comic books than does HITS. This difference is best illustrated by the inclusion of Mr. Fantastic in HITS' top-ranked characters and the inclusion of Spider Man in CoHITS' top-ranked characters: Spider Man appears in nearly twice as many comic books as Mr. Fantastic and collaborates with a significantly wider cast of characters than Mr. Fantastic; however, Mr. Fantastic tends to appear in highly central comic books with large character casts. It is open to interpretation as to which measure of centrality is better, but in many applications, we tend to prefer CoHITS over HITS as CoHITS ranks are less influenced by the presence of outliers with extreme degrees.
 

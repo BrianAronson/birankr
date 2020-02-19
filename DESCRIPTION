@@ -1,6 +1,6 @@
 Package: birankr
 Title: Ranking Nodes in Bipartite and Weighted Networks
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(person("Brian", "Aronson",email = "bdaronson@gmail.com", role = c("aut", "cre")), person("Kai-Cheng", "Yang", email = "yangkc@iu.edu", role = "aut"))
 Description: Highly efficient functions for estimating various rank (centrality) measures of nodes in bipartite graphs (two-mode networks). Includes methods for estimating HITS, CoHITS, BGRM, and BiRank with implementation primarily inspired by He et al. (2016) <doi:10.1109/TKDE.2016.2611584>. Also provides easy-to-use tools for efficiently estimating PageRank in one-mode graphs, incorporating or removing edge-weights during rank estimation, projecting two-mode graphs to one-mode, and for converting edgelists and matrices to sparseMatrix format. Best of all, the package's rank estimators can work directly with common formats of network data including edgelists (class data.frame, data.table, or tbl_df) and adjacency matrices (class matrix or dgCMatrix).
 Depends: R (>= 3.4.0),

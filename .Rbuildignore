@@ -1,2 +1,14 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^cran\-comments\.md$
+^LICENSE\.md$
+^\.Rhistory$
+^birankr\.pdf$
+^illustration\.png$
+^marvel\_network\.png$
+^paper\.bib$
+^paper\.md$
+^pypi\_readme\.md$
+^setup\.py$
+^examples$
+^birankpy$

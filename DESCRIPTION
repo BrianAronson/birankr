@@ -6,6 +6,7 @@ Description: Highly efficient functions for estimating various rank (centrality)
 Depends: R (>= 3.4.0),
  Matrix,
  data.table
+Suggests: testthat
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

@@ -6,12 +6,12 @@ test_that("pagerank works with dataframes", {
   expect_error(pagerank(data = df), NA)
 })
 
-test_that("pagerank works with matrices", {
-  my_matrix <- rep(0, 70)
-  my_matrix[c(1, 3, 7, 8, 16, 19, 24, 32, 39, 40, 47, 55, 63, 70)] <- 1
-  my_matrix <- matrix(data = my_matrix, nrow = 7, ncol = 10)
-  expect_error(pagerank(data = my_matrix), NA)
-})
+# test_that("pagerank works with matrices", {
+#   my_matrix <- rep(0, 70)
+#   my_matrix[c(1, 3, 7, 8, 16, 19, 24, 32, 39, 40, 47, 55, 63, 70)] <- 1
+#   my_matrix <- matrix(data = my_matrix, nrow = 7, ncol = 10)
+#   expect_error(pagerank(data = my_matrix), NA)
+# })
 
 test_that("pagerank works with sparse matrices", {
   my_matrix <- sparseMatrix(i = c(1, 1, 2, 3, 4, 4, 5, 6, 7, 7, 3, 5, 5, 7),

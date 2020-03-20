@@ -9,7 +9,7 @@
 # #' @param tol Maximum tolerance of model convergence. Defaults to 1.0e-4.
 # #' @param verbose Show the progress of this function. Defaults to FALSE.
 # #' @import Matrix data.table
- 
+
 bipartite_pagerank_from_matrix <- function(
                      adj_mat,
                      normalizer = c('HITS','CoHITS','BGER','BGRM','BiRank'),

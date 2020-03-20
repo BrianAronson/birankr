@@ -6,12 +6,12 @@ test_that("bipartite_rank works with dataframes", {
   expect_error(bipartite_rank(data = df), NA)
 })
 
-test_that("bipartite_rank works with matrices", {
-  my_matrix <- rep(0, 100)
-  my_matrix[c(1, 11, 22, 33, 44, 54, 65, 76, 87, 97)] <- 1
-  my_matrix <- matrix(data = my_matrix, nrow = 10, ncol = 10)
-  expect_error(bipartite_rank(data = my_matrix), NA)
-})
+# test_that("bipartite_rank works with matrices", {
+#   my_matrix <- rep(0, 100)
+#   my_matrix[c(1, 11, 22, 33, 44, 54, 65, 76, 87, 97)] <- 1
+#   my_matrix <- matrix(data = my_matrix, nrow = 10, ncol = 10)
+#   expect_error(bipartite_rank(data = my_matrix), NA)
+# })
 
 test_that("bipartite_rank works with sparse matrices", {
   my_matrix <- sparseMatrix(i = c(1, 1, 2, 3, 4, 4, 5, 6, 7, 7),
@@ -30,35 +30,35 @@ test_that("bipartite_rank accepts senders and receivers", {
   expect_equal(names(rank)[1], c("third_id"))
 })
 
-test_that("bipartite_rank uses edge weights by default", {
-  my_matrix <- rep(0, 100)
-  my_matrix[c(1, 11, 22, 33, 44, 54, 65, 76, 87, 97)] <- 1
-  my_matrix <- matrix(data = my_matrix, nrow = 10, ncol = 10)
-  rank.no.weights <- bipartite_rank(data = my_matrix)
+# test_that("bipartite_rank uses edge weights by default", {
+#   my_matrix <- rep(0, 100)
+#   my_matrix[c(1, 11, 22, 33, 44, 54, 65, 76, 87, 97)] <- 1
+#   my_matrix <- matrix(data = my_matrix, nrow = 10, ncol = 10)
+#   rank.no.weights <- bipartite_rank(data = my_matrix)
+#
+#   my_matrix <- rep(0, 100)
+#   my_matrix[c(1, 11, 22, 33, 44, 54, 65)] <- 1
+#   my_matrix[c(76, 87, 97)] <- 3
+#   my_matrix <- matrix(data = my_matrix, nrow = 10, ncol = 10)
+#   rank.with.weights <- bipartite_rank(data = my_matrix)
+#
+#   expect_false(isTRUE(all.equal(rank.no.weights, rank.with.weights)))
+# })
 
-  my_matrix <- rep(0, 100)
-  my_matrix[c(1, 11, 22, 33, 44, 54, 65)] <- 1
-  my_matrix[c(76, 87, 97)] <- 3
-  my_matrix <- matrix(data = my_matrix, nrow = 10, ncol = 10)
-  rank.with.weights <- bipartite_rank(data = my_matrix)
-
-  expect_false(isTRUE(all.equal(rank.no.weights, rank.with.weights)))
-})
-
-test_that("bipartite_rank removes edge weights properly", {
-  my_matrix <- rep(0, 100)
-  my_matrix[c(1, 11, 22, 33, 44, 54, 65, 76, 87, 97)] <- 1
-  my_matrix <- matrix(data = my_matrix, nrow = 10, ncol = 10)
-  rank.no.weights <- bipartite_rank(data = my_matrix)
-
-  my_matrix <- rep(0, 100)
-  my_matrix[c(1, 11, 22, 33, 44, 54, 65)] <- 1
-  my_matrix[c(76, 87, 97)] <- 3
-  my_matrix <- matrix(data = my_matrix, nrow = 10, ncol = 10)
-  rank.remove.weights <- bipartite_rank(data = my_matrix, rm_weights = T)
-  expect_equal(rank.remove.weights, rank.no.weights)
-
-})
+# test_that("bipartite_rank removes edge weights properly", {
+#   my_matrix <- rep(0, 100)
+#   my_matrix[c(1, 11, 22, 33, 44, 54, 65, 76, 87, 97)] <- 1
+#   my_matrix <- matrix(data = my_matrix, nrow = 10, ncol = 10)
+#   rank.no.weights <- bipartite_rank(data = my_matrix)
+#
+#   my_matrix <- rep(0, 100)
+#   my_matrix[c(1, 11, 22, 33, 44, 54, 65)] <- 1
+#   my_matrix[c(76, 87, 97)] <- 3
+#   my_matrix <- matrix(data = my_matrix, nrow = 10, ncol = 10)
+#   rank.remove.weights <- bipartite_rank(data = my_matrix, rm_weights = T)
+#   expect_equal(rank.remove.weights, rank.no.weights)
+#
+# })
 
 test_that("bipartite_rank adds duplicate edges in edge list properly", {
   df <- data.table(

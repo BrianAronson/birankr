@@ -15,7 +15,7 @@ Both R and Python versions are available.
 
 ## R version: birankr
 ### Overview
-[CRAN package](https://cran.r-project.org/web/packages/birankr/index.html) with highly efficient functions for estimating various rank (centrality) measures of nodes in bipartite graphs (two-mode networks) including HITS, CoHITS, BGRM, and BiRank. Also provides easy-to-use tools for incorporating or removing edge-weights during rank estimation, projecting two-mode graphs to one-mode, efficiently estimating PageRank in one-mode graphs, and for converting edgelists and matrices to sparseMatrix format. Best of all, the package's rank estimators can work directly with common formats of network data including edgelists (class `data.frame`, `data.table`, or `tbl_df`) and adjacency matrices (class `matrix` or `dgCMatrix`).
+[CRAN package](https://cran.r-project.org/package=birankr) with highly efficient functions for estimating various rank (centrality) measures of nodes in bipartite graphs (two-mode networks) including HITS, CoHITS, BGRM, and BiRank. Also provides easy-to-use tools for incorporating or removing edge-weights during rank estimation, projecting two-mode graphs to one-mode, efficiently estimating PageRank in one-mode graphs, and for converting edgelists and matrices to sparseMatrix format. Best of all, the package's rank estimators can work directly with common formats of network data including edgelists (class `data.frame`, `data.table`, or `tbl_df`) and adjacency matrices (class `matrix` or `dgCMatrix`).
 
 ### Installation
 
@@ -50,7 +50,7 @@ Finally, we decide to identify the IDs and ranks of the highest ranking patients
 head(df.rank[order(rank, decreasing = T), ], 10)
 ```
 
-For a more detailed example, check out [examples/Marvel_social_network.md](examples/Marvel_social_network.md), where we use the ranking algorithm to analyze the Marvel comic book social network.
+For a more detailed example, check out [examples/Marvel_social_network.md](https://github.com/BrianAronson/birankr/blob/master/examples/Marvel_social_network.md), where we use the ranking algorithm to analyze the Marvel comic book social network.
 
 
 
@@ -79,7 +79,7 @@ Below is a brief outline of each function in this package:
     - Removes edge weights from a sparsematrix
 
 
-Full documentation of `birankr` can be found in [birankr.pdf](birankr.pdf).
+Full documentation of `birankr` can be found in [birankr.pdf](https://github.com/BrianAronson/birankr/blob/master/birankr.pdf).
 
 ## Python version: birankpy
 ### Overview
@@ -125,11 +125,11 @@ bn.set_edgelist(edgelist_df,  top_col='top_node', bottom_col='bottom_node')
 top_birank_df, bottom_birank_df = bn.generate_birank()
 ```
 
-For a more detailed example, check out [examples/Marvel_social_network.ipynb](examples/Marvel_social_network.ipynb), where we use the ranking algorithm to analyze the Marvel comic book social network.
+For a more detailed example, check out [examples/Marvel_social_network.ipynb](https://github.com/BrianAronson/birankr/blob/master/examples/Marvel_social_network.ipynb), where we use the ranking algorithm to analyze the Marvel comic book social network.
 
 ### Documentation
 
-See documentation for `birankpy` at [birankpy doc](birankpy/README.md).
+See documentation for `birankpy` at [birankpy doc](https://github.com/BrianAronson/birankr/blob/master/birankpy/README.md).
 
 # Community Guidelines
 

@@ -33,10 +33,10 @@ However, one-mode projections often destroy important structural information [@l
 To overcome the issues of one-mode projection, we present BiRank, a R and Python package that performs PageRank on bipartite networks directly.
 BiRank package contains several ranking algorithms that generalize PageRank to bipartite networks by propagating the probability mass (or importance scores) across two sides of the networks repeatedly using the following equations:
 
-$$ \vec{T} = \alpha S_T \vec{B} + (1-\alpha)\vec{T}^0 $$
-$$ \vec{B} = \beta S_B \vec{T} + (1-\beta)\vec{B}^0 $$
+$$ \mathbf{T} = \alpha S_T \mathbf{B} + (1-\alpha)\mathbf{T}^0 $$
+$$ \mathbf{B} = \beta S_B \mathbf{T} + (1-\beta)\mathbf{B}^0 $$
 
-until they converge (see Figure \ref{illustration}(a)), where $\vec{T},\vec{B}$ are the ranking values for the top and bottom nodes, elements in $\vec{T}^0$ and $\vec{B}^0$ are set to $1/|T|$ and $1/|B|$ by default, $\alpha$ and $\beta$ are damping factors and set to 0.85 by default, $S_T, S_B$ are the transition matrices.
+until they converge (see Figure \ref{illustration}(a)), where $\mathbf{T},\mathbf{B}$ are the ranking values for the top and bottom nodes, elements in $\mathbf{T}^0$ and $\mathbf{B}^0$ are set to $1/|\mathbf{T}|$ and $1/|\mathbf{B}|$ by default, $\alpha$ and $\beta$ are damping factors and set to 0.85 by default, $S_T, S_B$ are the transition matrices.
 Unlike the one-mode projected PageRank, BiRank algorithms generate the ranking values for nodes from both sides simultaneously and take account of the full network topology without any information loss.
 
 ![(a) BiRank algorithms perform the ranking process on the bipartite networks directly and generate the ranking values for the top and bottom nodes simultaneously. (b) A bipartite network with three top nodes and four bottom nodes. (c) After the one-mode projection, a unipartite network of the bottom nodes is generated. PageRank can be performed to generate the ranking values of the bottom nodes. \label{illustration}](illustration.png) 

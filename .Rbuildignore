@@ -15,4 +15,5 @@
 ^News\.md$
 ^tests/test_birankpy.py$
 ^tests/test_edgelist.csv$
+^\.travis\.yml$
 ^CRAN-RELEASE$

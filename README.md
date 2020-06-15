@@ -2,6 +2,7 @@
 
 [![PyPI version](https://badge.fury.io/py/birankpy.svg)](https://badge.fury.io/py/birankpy)
 [![Downloads](https://pepy.tech/badge/birankpy)](https://pepy.tech/project/birankpy)
+[![Travis build status](https://travis-ci.org/BrianAronson/birankr.svg?branch=master)](https://travis-ci.org/BrianAronson/birankr)
 
 Bipartite (two-mode) networks are ubiquitous.
 When calculating node centrality measures in bipartite networks, a common approach is to apply PageRank on the one-mode projection of the network.

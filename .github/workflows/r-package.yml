@@ -26,7 +26,11 @@ jobs:
     - uses: r-lib/actions/setup-r@master
       with:
           r-version: '3.6.1'
+          
+    # Install devtools
+    - name: 
+      run: Rscript -e 'install.packages("devtools")'
 
     # Runs a single command using the runners shell
     - name: Run tests
-      run: Rscript -e "devtools::test("birankr")"
+      run: Rscript -e "devtools::test()"

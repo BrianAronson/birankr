@@ -131,6 +131,14 @@ For a more detailed example, check out [examples/Marvel_social_network.ipynb](ht
 
 See documentation for `birankpy` at [birankpy doc](https://github.com/BrianAronson/birankr/blob/master/birankpy/README.md).
 
+### Tests
+
+To run the unit tests, first go to the `tests` directory and then run:
+
+```bash
+python test_birankpy.py
+```
+
 # Community Guidelines
 
 ## How to Contribute

@@ -78,8 +78,15 @@ Below is a brief outline of each function in this package:
 - **sparsematrix\_rm\_weights**
     - Removes edge weights from a sparsematrix
 
-
+### Documentation
 Full documentation of `birankr` can be found in [birankr.pdf](https://github.com/BrianAronson/birankr/blob/master/birankr.pdf).
+
+### Tests
+To run the unit tests, install the birankr and devtools packages and run:
+
+```
+devtools::test("birankr")
+```
 
 ## Python version: birankpy
 ### Overview

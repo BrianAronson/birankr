@@ -98,7 +98,7 @@ It is also worth mentioning that assigning different edge weights to the network
 Our package offers flexibility by allowing different combinations of algorithms and edge weights.
 We leave the choice to the users' discretion.
 
-Both R (birankr) and Python (birankpy) versions of the package are available. The documentation of BiRank consists of manual pages for its method functions, example usages, and unit tests.
+Despite the ubiquity of bitpartite networks, bipartite PageRank algorithms are missing from the popular network packages, and our package is dedicated to close this gap. Our target audience includes researchers and data scientists who deal with bipartite networks. To improve the accessibility, both R (birankr) and Python (birankpy) versions of the package are available. The documentation of BiRank consists of manual pages for its method functions, example usages, and unit tests.
 
 # Acknowledgement
 

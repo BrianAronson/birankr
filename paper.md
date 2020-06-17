@@ -30,7 +30,7 @@ Common examples include networks of collaboration between scientists and their s
 Bipartite networks are commonly reduced to unipartite networks for further analysis, such as calculating node centrality (e.g. PageRank, see Figure \ref{illustration}(c)).
 However, one-mode projections often destroy important structural information [@lehmann2008biclique] and can lead to imprecise network measurements. Moreover, there are numerous ways to obtain unipartite networks from a bipartite network, each of which has different characteristics and idiosyncrasies [@bass2013using].
 
-To overcome the issues of one-mode projection, we present BiRank, a R and Python package that performs PageRank on bipartite networks directly.
+To overcome the issues of one-mode projection, we present BiRank, an R and Python package that performs PageRank on bipartite networks directly.
 BiRank package contains several ranking algorithms that generalize PageRank to bipartite networks by propagating the probability mass (or importance scores) across two sides of the networks repeatedly using the following equations:
 
 $$ \mathbf{T} = \alpha S_T \mathbf{B} + (1-\alpha)\mathbf{T}^0 $$

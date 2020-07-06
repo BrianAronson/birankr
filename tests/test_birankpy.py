@@ -140,30 +140,31 @@ class TestBiRank(unittest.TestCase):
                 )
 
                 for normalizer in ['HITS', 'CoHITS', 'BGRM', 'BiRank']:
-                    top_rank, bottom_rank = bn.generate_birank(normalizer=normalizer)
-                    top_rank = top_rank.merge(
-                        expected_results.query('side == "top"'),
-                        left_on='top', right_on='node'
-                    )
-
-                    self.assertTrue(
-                        np.allclose(
-                            top_rank['top_birank'],
-                            top_rank[normalizer]
+                    with self.subTest(normalizer=normalizer):
+                        top_rank, bottom_rank = bn.generate_birank(normalizer=normalizer)
+                        top_rank = top_rank.merge(
+                            expected_results.query('side == "top"'),
+                            left_on='top', right_on='node'
                         )
-                    )
 
-                    bottom_rank = bottom_rank.merge(
-                        expected_results.query('side == "bottom"'),
-                        left_on='bottom', right_on='node'
-                    )
-
-                    self.assertTrue(
-                        np.allclose(
-                            bottom_rank['bottom_birank'],
-                            bottom_rank[normalizer]
+                        self.assertTrue(
+                            np.allclose(
+                                top_rank['top_birank'],
+                                top_rank[normalizer]
+                            )
                         )
-                    )
+
+                        bottom_rank = bottom_rank.merge(
+                            expected_results.query('side == "bottom"'),
+                            left_on='bottom', right_on='node'
+                        )
+
+                        self.assertTrue(
+                            np.allclose(
+                                bottom_rank['bottom_birank'],
+                                bottom_rank[normalizer]
+                            )
+                        )
 
 
 

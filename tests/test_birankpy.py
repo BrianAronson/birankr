@@ -126,7 +126,7 @@ class TestBiRank(unittest.TestCase):
     Test birankpy.BipartiteNetwork
     """
     def test_birank(self):
-        for i in range(1):
+        for i in range(4):
             with self.subTest(i=i):
                 bn = birankpy.BipartiteNetwork()
                 bn.load_edgelist(
@@ -150,7 +150,8 @@ class TestBiRank(unittest.TestCase):
                         self.assertTrue(
                             np.allclose(
                                 top_rank['top_birank'],
-                                top_rank[normalizer]
+                                top_rank[normalizer],
+                                rtol=1e-03, atol=1e-03
                             )
                         )
 
@@ -162,7 +163,8 @@ class TestBiRank(unittest.TestCase):
                         self.assertTrue(
                             np.allclose(
                                 bottom_rank['bottom_birank'],
-                                bottom_rank[normalizer]
+                                bottom_rank[normalizer],
+                                rtol=1e-03, atol=1e-03
                             )
                         )
 

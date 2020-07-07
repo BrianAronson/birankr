@@ -105,10 +105,15 @@ def birank(W, normalizer='HITS',
             p = p / p.sum()
             d = d / d.sum()
 
-        err = np.absolute(p - p_last).sum()
+        err_p = np.absolute(p - p_last).sum()
+        err_d = np.absolute(d - d_last).sum()
         if verbose:
-            print(i, err)
-        if err < tol:
+            print(
+                "Iteration : {}; top error: {}; bottom error: {}".format(
+                    i, err_d, err_p
+                )
+            )
+        if err_p < tol and err_d < tol:
             break
         d_last = d
         p_last = p

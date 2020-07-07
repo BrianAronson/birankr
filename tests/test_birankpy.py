@@ -125,20 +125,49 @@ class TestBiRank(unittest.TestCase):
     """
     Test birankpy.BipartiteNetwork
     """
-    def setUp(self):
-        self.bn = birankpy.BipartiteNetwork()
-        self.bn.load_edgelist(
-            "./test_edgelist.csv",
-            top_col='top',
-            bottom_col='bottom',
-            weight_col='weight'
-        )
-
     def test_birank(self):
-        for normalizer in ['HITS', 'CoHITS', 'BGRM', 'BiRank']:
-            top_rank, bottom_rank = self.bn.generate_birank(normalizer=normalizer)
-            self.assertEqual(len(top_rank), 3)
-            self.assertEqual(len(bottom_rank), 4)
+        for i in range(4):
+            with self.subTest(i=i):
+                bn = birankpy.BipartiteNetwork()
+                bn.load_edgelist(
+                    'birank_test_cases/net_{}.csv'.format(i),
+                    top_col='top',
+                    bottom_col='bottom',
+                    weight_col='weight'
+                )
+                expected_results = pd.read_csv(
+                    'birank_test_cases/net_{}_ranking.csv'.format(i)
+                )
+
+                for normalizer in ['HITS', 'CoHITS', 'BGRM', 'BiRank']:
+                    with self.subTest(normalizer=normalizer):
+                        top_rank, bottom_rank = bn.generate_birank(normalizer=normalizer)
+                        top_rank = top_rank.merge(
+                            expected_results.query('side == "top"'),
+                            left_on='top', right_on='node'
+                        )
+
+                        self.assertTrue(
+                            np.allclose(
+                                top_rank['top_birank'],
+                                top_rank[normalizer],
+                                rtol=1e-03, atol=1e-03
+                            )
+                        )
+
+                        bottom_rank = bottom_rank.merge(
+                            expected_results.query('side == "bottom"'),
+                            left_on='bottom', right_on='node'
+                        )
+
+                        self.assertTrue(
+                            np.allclose(
+                                bottom_rank['bottom_birank'],
+                                bottom_rank[normalizer],
+                                rtol=1e-03, atol=1e-03
+                            )
+                        )
+
 
 
 if __name__ == "__main__":

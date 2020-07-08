@@ -1,3 +1,5 @@
+context("Test bipartite_ranks")
+
 test_that("bipartite_rank works with dataframes", {
   df <- data.table(
     patient_id = sample(x = 1:100, size = 100, replace = TRUE),
@@ -35,13 +37,13 @@ test_that("bipartite_rank accepts senders and receivers", {
 #   my_matrix[c(1, 11, 22, 33, 44, 54, 65, 76, 87, 97)] <- 1
 #   my_matrix <- matrix(data = my_matrix, nrow = 10, ncol = 10)
 #   rank.no.weights <- bipartite_rank(data = my_matrix)
-#
+# 
 #   my_matrix <- rep(0, 100)
 #   my_matrix[c(1, 11, 22, 33, 44, 54, 65)] <- 1
 #   my_matrix[c(76, 87, 97)] <- 3
 #   my_matrix <- matrix(data = my_matrix, nrow = 10, ncol = 10)
 #   rank.with.weights <- bipartite_rank(data = my_matrix)
-#
+# 
 #   expect_false(isTRUE(all.equal(rank.no.weights, rank.with.weights)))
 # })
 
@@ -50,14 +52,14 @@ test_that("bipartite_rank accepts senders and receivers", {
 #   my_matrix[c(1, 11, 22, 33, 44, 54, 65, 76, 87, 97)] <- 1
 #   my_matrix <- matrix(data = my_matrix, nrow = 10, ncol = 10)
 #   rank.no.weights <- bipartite_rank(data = my_matrix)
-#
+# 
 #   my_matrix <- rep(0, 100)
 #   my_matrix[c(1, 11, 22, 33, 44, 54, 65)] <- 1
 #   my_matrix[c(76, 87, 97)] <- 3
 #   my_matrix <- matrix(data = my_matrix, nrow = 10, ncol = 10)
 #   rank.remove.weights <- bipartite_rank(data = my_matrix, rm_weights = T)
 #   expect_equal(rank.remove.weights, rank.no.weights)
-#
+# 
 # })
 
 test_that("bipartite_rank adds duplicate edges in edge list properly", {
@@ -92,5 +94,47 @@ test_that("bipartite_rank returns selected normalizer", {
     patient_id = sample(x = 1:100, size = 100, replace = TRUE),
     provider_id = sample(x = 1:50, size = 100, replace = TRUE)
   )
-  expect_false(isTRUE(all.equal(bipartite_rank(data = df, normalizer = "HITS"), bipartite_rank(data = df, return_mode = "BiRank"))))
+  expect_false(isTRUE(all.equal(bipartite_rank(data = df, normalizer = "HITS"), bipartite_rank(data = df, normalizer = "BiRank"))))
 })
+
+
+# Add 32 unit tests that estimate whether bipartite_rank matches ranks that were computed "by hand" (externally).
+  # Load data
+      net_0 <- fread("../birank_test_cases/net_0.csv")
+      net_0_ranking <- fread("../birank_test_cases/net_0_ranking.csv")
+      net_1 <- fread("../birank_test_cases/net_1.csv")
+      net_1_ranking <- fread("../birank_test_cases/net_1_ranking.csv")
+      net_2 <- fread("../birank_test_cases/net_2.csv")
+      net_2_ranking <- fread("../birank_test_cases/net_2_ranking.csv")
+      net_3 <- fread("../birank_test_cases/net_3.csv")
+      net_3_ranking <- fread("../birank_test_cases/net_3_ranking.csv")
+  # Create conditions to test
+      sample <- c("net_0", "net_1", "net_2", "net_3")
+      mode <- c("top", "bottom")
+      method <- c("HITS", "CoHITS", "BGRM", "BiRank")
+      ext_tests <- data.frame(expand.grid(sample, mode, method))
+      names(ext_tests) <- c("sample", "mode", "method")
+      ext_tests$return_mode <- ifelse(ext_tests$mode == "top", "rows", "columns")
+  # Create testing function to determine if bipartite_rank on external data matches previously determined ranks.
+      test_fun <- function(sample, mode, method, return_mode){
+          test_text <- paste("bipartite_rank estimates expected values on external data ",
+                             "(sample = ", sample, 
+                             ", mode = ", mode, 
+                             ", method = ", method,
+                             ")"
+                       , sep = "")
+          data <- eval(parse(text = paste(sample)))
+          data_ranking <- eval(parse(text = paste(sample, "_ranking", sep = "")))
+          lefthand <- bipartite_rank(data, normalizer = method, return_mode = return_mode)
+          righthand <- data_ranking[side == mode, c("node", as.character(method)), with = F]
+          lefthand <- lefthand[order(lefthand[,1]), ]
+          righthand <- righthand[order(righthand[,1]), ]
+          lefthand <- round(lefthand$rank * 2, 2) / 2
+          righthand <- round(as.vector(unlist(righthand[, 2])) * 2 , 2) /2 
+          test_that(test_text, expect_equal(lefthand, righthand))
+      }
+  # Run test function on all 32 conditions
+      for(i in 1: nrow(ext_tests)){
+        test_fun(ext_tests$sample[i], ext_tests$mode[i], ext_tests$method[i], ext_tests$return_mode[i])
+      }
+      

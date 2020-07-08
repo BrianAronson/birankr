@@ -73,9 +73,10 @@ bipartite_pagerank_from_matrix <- function(
                 p = p / sum(p)
                 d = d / sum(d)
             }
-            err = sum(abs(p - p_last))
-            if(verbose) message(paste(i, err))
-            if(err < tol) break
+            err_p = sum(abs(p - p_last))
+            err_d = sum(abs(d - d_last))
+            if(verbose) message(paste("Iteration: ", i,"; top error: ", sprintf("%.5f", round(err_d, 5)), "; bottom error: ", sprintf("%.5f", round(err_p, 5)), sep = ""))
+            if(err_p < tol & err_d < tol) break
             d_last = d
             p_last = p
         }
@@ -92,3 +93,4 @@ bipartite_pagerank_from_matrix <- function(
         }
         return(results)
 }
+

@@ -51,9 +51,11 @@ br_cohits(
 A dataframe containing each node name and node rank. If return_data_frame changed to FALSE or input data is classed as an adjacency matrix, returns a vector of node ranks. Does not return node ranks for isolates.
 }
 \description{
-Estimate CoHITS ranks of nodes from an edge list or adjacency matrix. Returns a vector of ranks or (optionally) a list containing a vector for each mode. If the provided data is an edge list, this function returns ranks ordered by the unique values in the selected mode.
+Estimate CoHITS ranks of nodes from an edge list or adjacency matrix. Returns a vector of ranks or (optionally) a list containing a vector for each mode.
 }
 \details{
+If input data is an edge list, this function returns ranks ordered by the unique values in the supplied edge list. Data inputted as an edge list are always assumed to contain named vertex IDs rather than to reflect an index of vertex positions in a network matrix. Users who wish for their edge lists to reflect vertex indices are recommended to input their data as a matrix or as a sparse matrix. \cr \cr
+Network isolates are assigned a value of \eqn{(1 - alpha) / (n\_columns)} or \eqn{(1 - beta) / (n\_rows)} depending on their mode in the network. These values will always be smaller than the minimum value assigned to non-isolated nodes in the given mode. However, estimates on network isolates are non-meaningful. Users are advised to treat isolates with caution. \cr \cr
 Created by Deng, Lyo, and Kind (2009) \doi{10.1145/1557019.1557051}, CoHITS was developed explicitly for use in bipartite graphs as a way to better-incorporate content information (the "Co" in CoHITS) in HITS ranks. Like HITS, CoHITS is based on a markov process for simultaneously estimating ranks across each mode of the input data. CoHITS primarily differs from HITS in that it normalizes the transition matrix by the out-degree of the source nodes, leading to an interpretation more similar to that of a random walk.
 }
 \examples{

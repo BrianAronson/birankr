@@ -17,3 +17,5 @@
 ^tests/test_edgelist.csv$
 ^\.travis\.yml$
 ^CRAN-RELEASE$
+^man/br_cohits.Rd$
+^man/br_bgrm.Rd$

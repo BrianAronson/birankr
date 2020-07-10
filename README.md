@@ -1,8 +1,12 @@
 # BiRank R and Python package
 
-[![DOI](https://joss.theoj.org/papers/10.21105/joss.02315/status.svg)](https://doi.org/10.21105/joss.02315)
+JOSS paper: [![DOI](https://joss.theoj.org/papers/10.21105/joss.02315/status.svg)](https://doi.org/10.21105/joss.02315)
+
+Python package: 
 [![PyPI version](https://badge.fury.io/py/birankpy.svg)](https://badge.fury.io/py/birankpy)
 [![Downloads](https://pepy.tech/badge/birankpy)](https://pepy.tech/project/birankpy)
+
+R package:
 [![Travis build status](https://travis-ci.org/BrianAronson/birankr.svg?branch=master)](https://travis-ci.org/BrianAronson/birankr)
 [![R Downloads](https://cranlogs.r-pkg.org/badges/grand-total/birankr)](https://cranlogs.r-pkg.org/badges/grand-total/birankr)
 

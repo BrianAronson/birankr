@@ -31,7 +31,7 @@ Bipartite networks are commonly reduced to unipartite networks for further analy
 However, one-mode projections often destroy important structural information [@lehmann2008biclique] and can lead to imprecise network measurements. Moreover, there are numerous ways to obtain unipartite networks from a bipartite network, each of which has different characteristics and idiosyncrasies [@bass2013using].
 
 To overcome the issues of one-mode projection, we present BiRank, an R and Python package that performs PageRank on bipartite networks directly.
-BiRank package contains several ranking algorithms that generalize PageRank to bipartite networks by propagating the probability mass (or importance scores) across two sides of the networks repeatedly using the following equations:
+The BiRank package contains several ranking algorithms that generalize PageRank to bipartite networks by propagating the probability mass (or importance scores) across two sides of the networks repeatedly using the following equations:
 
 $$ \mathbf{T} = \alpha S_T \mathbf{B} + (1-\alpha)\mathbf{T}^0 $$
 $$ \mathbf{B} = \beta S_B \mathbf{T} + (1-\beta)\mathbf{B}^0 $$
@@ -41,7 +41,7 @@ Unlike the one-mode projected PageRank, BiRank algorithms generate the ranking v
 
 ![(a) BiRank algorithms perform the ranking process on the bipartite networks directly and generate the ranking values for the top and bottom nodes simultaneously. (b) A bipartite network with three top nodes and four bottom nodes. (c) After the one-mode projection, a unipartite network of the bottom nodes is generated. PageRank can be performed to generate the ranking values of the bottom nodes. \label{illustration}](illustration.png) 
 
-Our package implements most notable and straightforward operationalizations of biparitite PageRanks including HITS [@kleinberg1999authoritative; @liao2014network], CoHITS [@deng2009generalized], BGRM [@rui2007bipartite], and Birank [@he2016birank].
+Our package implements the most notable and straightforward operationalizations of biparitite PageRanks including HITS [@kleinberg1999authoritative; @liao2014network], CoHITS [@deng2009generalized], BGRM [@rui2007bipartite], and Birank [@he2016birank].
 The algorithms mainly differ in the way they normalize node ranks in the iterations (see Table \ref{normalizers}).
 
 : A summary of transition matrices used in different BiRank algorithms.
@@ -63,7 +63,7 @@ $w_{ij}$ is the element on row $i$ and column $j$ of the bipartite network adjac
 Our guiding philosophy is to make the package as flexible as possible, given the diverse array of problems and data formats that are used in network analysis, while achieving good performance.
 We therefore provide a number of convenience options for incorporating edge weights into rank estimations, estimating ranks on different types of input (edge lists, dense matrices, and sparse matrices), multiple file formats (as vectors, lists, or data frames), and for estimating PageRank on the one-mode projection of a network.
 Moreover, this implementation uses efficient data storage and algorithms to ensure good performance and scalability.
-For example, regardless of the algorithm of choice, it takes less than 10 seconds and less than 1GB of RAM to estimate ranks on a bipartite network containing half million top nodes, more than two million bottom nodes, and about three million edges on a machine with 16 AMD EPYC 7000 series 2.5 GHz processors.
+For example, regardless of the algorithm of choice, it takes less than 10 seconds and less than 1GB of RAM to estimate ranks on a bipartite network containing half a million top nodes, more than two million bottom nodes, and about three million edges on a machine with 16 AMD EPYC 7000 series 2.5 GHz processors.
 
 As a demonstration, we apply HITS, CoHITS, and one-mode projected PageRank to the Marvel Universe collaboration network  [@alberich2002marvel].
 The Marvel Universe collaboration network comprises a network of affiliation with ties between every Marvel comic book (n = 12,849) and every character (n = 6,444) who appeared in those books. To give a sense of this network's structure, Figure \ref{marvel_network} illustrates a small sociogram of characters within ten comic books of this dataset.
@@ -98,7 +98,7 @@ It is also worth mentioning that assigning different edge weights to the network
 Our package offers flexibility by allowing different combinations of algorithms and edge weights.
 We leave the choice to the users' discretion.
 
-Despite the ubiquity of bitpartite networks, bipartite PageRank algorithms are missing from the popular network packages, and our package is dedicated to close this gap. Our target audience includes researchers and data scientists who deal with bipartite networks. To improve the accessibility, both R (birankr) and Python (birankpy) versions of the package are available. The documentation of BiRank consists of manual pages for its method functions, example usages, and unit tests.
+Despite the ubiquity of bitpartite networks, bipartite PageRank algorithms are missing from the popular network packages, and our package serves to close this gap. Our target audience includes researchers and data scientists who deal with bipartite networks. To improve the accessibility, both R (birankr) and Python (birankpy) versions of the package are available. The documentation of BiRank consists of manual pages for its method functions, example usages, and unit tests.
 
 # Acknowledgement
 

@@ -1,5 +1,6 @@
 # BiRank R and Python package
 
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.02315/status.svg)](https://doi.org/10.21105/joss.02315)
 [![PyPI version](https://badge.fury.io/py/birankpy.svg)](https://badge.fury.io/py/birankpy)
 [![Downloads](https://pepy.tech/badge/birankpy)](https://pepy.tech/project/birankpy)
 [![Travis build status](https://travis-ci.org/BrianAronson/birankr.svg?branch=master)](https://travis-ci.org/BrianAronson/birankr)

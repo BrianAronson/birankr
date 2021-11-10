@@ -14,7 +14,7 @@ setup(name='birankpy',
       url="https://github.com/BrianAronson/birankr",
       license = 'MIT',
       install_requires=[
-          'networkx==2.2',
+          'networkx>=2.5',
           'pandas>=0.23.4',
           'numpy>=1.16.2',
           'scipy>=1.2.0'

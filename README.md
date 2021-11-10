@@ -2,14 +2,13 @@
 
 JOSS paper: [![DOI](https://joss.theoj.org/papers/10.21105/joss.02315/status.svg)](https://doi.org/10.21105/joss.02315)
 
-Python package: 
+Python package:
 [![PyPI version](https://badge.fury.io/py/birankpy.svg)](https://badge.fury.io/py/birankpy)
 [![Downloads](https://pepy.tech/badge/birankpy)](https://pepy.tech/project/birankpy)
 
 R package:
 [![Travis build status](https://travis-ci.org/BrianAronson/birankr.svg?branch=master)](https://travis-ci.org/BrianAronson/birankr)
 [![R Downloads](https://cranlogs.r-pkg.org/badges/grand-total/birankr)](https://cranlogs.r-pkg.org/badges/grand-total/birankr)
-
 
 Bipartite (two-mode) networks are ubiquitous.
 When calculating node centrality measures in bipartite networks, a common approach is to apply PageRank on the one-mode projection of the network.
@@ -22,7 +21,9 @@ It can efficiently handle networks with millions of nodes on a single midrange s
 Both R and Python versions are available.
 
 ## R version: birankr
+
 ### Overview
+
 [CRAN package](https://cran.r-project.org/package=birankr) with highly efficient functions for estimating various rank (centrality) measures of nodes in bipartite graphs (two-mode networks) including HITS, CoHITS, BGRM, and BiRank. Also provides easy-to-use tools for incorporating or removing edge-weights during rank estimation, projecting two-mode graphs to one-mode, efficiently estimating PageRank in one-mode graphs, and for converting edgelists and matrices to sparseMatrix format. Best of all, the package's rank estimators can work directly with common formats of network data including edgelists (class `data.frame`, `data.table`, or `tbl_df`) and adjacency matrices (class `matrix` or `dgCMatrix`).
 
 ### Installation
@@ -30,6 +31,7 @@ Both R and Python versions are available.
 This package can be directly installed via CRAN with `install.packages("birankr")`. Alternatively, newest versions of this package can be installed with `devtools::install_github("BrianAronson/birankr")`
 
 ### Example
+
 Let's pretend we have a dataset (`df`) containing patient-provider ties (`patient_id` and `provider_id`) among providers that have ever prescribed an opioid:
 
 ```r
@@ -60,36 +62,37 @@ head(df.rank[order(rank, decreasing = T), ], 10)
 
 For a more detailed example, check out [examples/Marvel_social_network.md](https://github.com/BrianAronson/birankr/blob/master/examples/Marvel_social_network.md), where we use the ranking algorithm to analyze the Marvel comic book social network.
 
-
-
 ### Function overview
+
 Below is a brief outline of each function in this package:
 
-- **bipartite\_rank**
-    - Estimates any type of bipartite rank.
-- **br\_bgrm**
-    - Estimates ranks with BGRM algorithm
-- **br\_birank** 
-    - Estimates ranks with BiRank algorithm
-- **br\_cohits**
-    - Estimates ranks with CoHITS algorithm
-- **br\_hits** 
-    - Estimates ranks with HITS algorithm
+- **bipartite_rank**
+  - Estimates any type of bipartite rank.
+- **br_bgrm**
+  - Estimates ranks with BGRM algorithm
+- **br_birank**
+  - Estimates ranks with BiRank algorithm
+- **br_cohits**
+  - Estimates ranks with CoHITS algorithm
+- **br_hits**
+  - Estimates ranks with HITS algorithm
 - **pagerank**
-    - Estimates ranks with PageRank algorithm
-- **project\_to\_one\_mode**
-    - Creates a one mode projection of a sparse matrix
-- **sparsematrix\_from\_edgelist**
-    - Creates a sparsematrix from an edgelist
-- **sparsematrix\_from\_matrix** 
-    - Creates a sparsematrix from a matrix
-- **sparsematrix\_rm\_weights**
-    - Removes edge weights from a sparsematrix
+  - Estimates ranks with PageRank algorithm
+- **project_to_one_mode**
+  - Creates a one mode projection of a sparse matrix
+- **sparsematrix_from_edgelist**
+  - Creates a sparsematrix from an edgelist
+- **sparsematrix_from_matrix**
+  - Creates a sparsematrix from a matrix
+- **sparsematrix_rm_weights**
+  - Removes edge weights from a sparsematrix
 
 ### Documentation
+
 Full documentation of `birankr` can be found in [birankr.pdf](https://github.com/BrianAronson/birankr/blob/master/birankr.pdf).
 
 ### Tests
+
 To run the unit tests, install the birankr and devtools packages and run:
 
 ```
@@ -97,7 +100,13 @@ devtools::test("birankr")
 ```
 
 ## Python version: birankpy
+
+### History
+
+- Nov.10, 2021 (v1.0.1): drop support for python3.5; add support for python3.9
+
 ### Overview
+
 `birankpy` provides functions for estimating various rank measures of nodes in bipartite networks including HITS, CoHITS, BGRM, and BiRank.
 It can also project two-mode networks to one-mode, and estimate PageRank on it.
 `birankpy` allows user-defined edge weights.
@@ -119,16 +128,16 @@ pip install birankpy
 ```
 
 ### Example
+
 Let's pretend we have an edge list `edgelist_df` containing ties between top nodes and bottom nodes:
 
-top_node | bottom_node
------------- | -------------
-1 | a
-1 | b
-2 | a
-...|..
-123| z
-
+| top_node | bottom_node |
+| -------- | ----------- |
+| 1        | a           |
+| 1        | b           |
+| 2        | a           |
+| ...      | ..          |
+| 123      | z           |
 
 To performing BiRank on this bipartite network, just:
 
